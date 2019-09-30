@@ -1,4 +1,4 @@
-# Chess Ai
+# Tetris Ai
 
 ## UI
 
