@@ -9,7 +9,7 @@ public class Block {
     public int[] colour;
 
 
-    public Block(int size, int[] colour, int x, int y){
+    public Block(int size, int[] colour, double x, double y){
         this.x = x;
         this.y = y;
 
