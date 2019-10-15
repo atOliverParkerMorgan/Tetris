@@ -20,12 +20,12 @@ public class Blue_line extends Shape {
         int[] colour = new int[]{0, 0, 255};
 
 
-        int structure_x = 0;
-        int size = 10;
+        double structure_x = 0.0;
+        int size = 30;
 
         for(int i = 0; i < this.number_of_squars; i++){
             structure_x+=size;
-            Block b = new Block(size, colour, structure_x, 0);
+            Block b = new Block(size, colour, structure_x, 0.0);
             this.allblocks.add(b);
 
         }

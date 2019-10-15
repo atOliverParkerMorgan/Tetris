@@ -1,8 +1,8 @@
 package proc.sketches.Blocks;
 
 public class Block {
-    public int x;
-    public int y;
+    public double x;
+    public double y;
 
     public int size;
 
