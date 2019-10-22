@@ -14,18 +14,20 @@ public class Blue_line extends Shape {
 
 
     public boolean freeze;
+    public boolean flat;
     public Blue_line(){
         super();
-        this.freeze = false;
+
+
         int[] colour = new int[]{0, 0, 255};
 
 
         double structure_x = 0.0;
-        int size = 30;
+
 
         for(int i = 0; i < this.number_of_squars; i++){
-            structure_x+=size;
-            Block b = new Block(size, colour, structure_x, 0.0);
+            structure_x+=SIZE;
+            Block b = new Block(SIZE, colour, structure_x, 0.0);
             this.allblocks.add(b);
 
         }

@@ -1,6 +1,7 @@
 package proc.sketches;
 
 import proc.sketches.Blocks.Block;
+import proc.sketches.Blocks.Shape;
 import proc.sketches.Blocks.Shapes.Blue_line;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -13,8 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MAIN extends PApplet {
 
-    private int Timer;
-    private int next_game_update = Timer+3;
     private Blue_line Test;
 
     private PImage darkBlue_block;
@@ -24,10 +23,6 @@ public class MAIN extends PApplet {
     private PImage Yellow_block;
     private PImage Orange_block;
     private PImage Red_block;
-
-    static final int FPS = 60, INTERVAL = 5 * 1000; // 5 seconds
-
-    Timer timer;
 
     public void settings(){
 
@@ -45,7 +40,7 @@ public class MAIN extends PApplet {
 
 
         // Canvas
-        size(800, 900, JAVA2D);
+        size(Shape.max_X, Shape.max_Y, JAVA2D);
         Test = new Blue_line();
         // And From your main() method or any other method
         Timer timer = new Timer();
@@ -61,7 +56,10 @@ public class MAIN extends PApplet {
 
 
         for(Block block: Test.allblocks){
-            image(darkBlue_block,block.x,block.y);
+            int x = (int) block.x;
+            int y = (int) block.y;
+
+            image(darkBlue_block, x,y);
 
         }
 
@@ -71,8 +69,8 @@ public class MAIN extends PApplet {
             Test.move_left();
         }else if (key == 'd') {
             Test.move_right();
-        }else if(key == 'w'){
-            Test.rotate_ClockWise();
+        }else if(key == ' '){
+            Test.rotate();
         }
     }
 
