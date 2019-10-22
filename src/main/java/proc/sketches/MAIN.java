@@ -65,11 +65,11 @@ public class MAIN extends PApplet {
 
     }
     public void keyPressed() {
-        if (key == 'a') {
+        if (keyCode == LEFT) {
             Test.move_left();
-        }else if (key == 'd') {
+        }else if (keyCode == RIGHT) {
             Test.move_right();
-        }else if(key == ' '){
+        }else if(keyCode == UP){
             Test.rotate();
         }
     }
