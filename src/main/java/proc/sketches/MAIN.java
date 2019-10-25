@@ -5,11 +5,9 @@ import proc.sketches.Blocks.Shape;
 import proc.sketches.Blocks.Shapes.Blue_line;
 import processing.core.PApplet;
 import processing.core.PImage;
+
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 
 public class MAIN extends PApplet {
@@ -65,11 +63,11 @@ public class MAIN extends PApplet {
 
     }
     public void keyPressed() {
-        if (key == 'a') {
+        if (keyCode == LEFT) {
             Test.move_left();
-        }else if (key == 'd') {
+        }else if (keyCode == RIGHT) {
             Test.move_right();
-        }else if(key == ' '){
+        }else if(keyCode == UP){
             Test.rotate();
         }
     }

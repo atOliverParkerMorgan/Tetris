@@ -13,8 +13,8 @@ public class Shape {
     public static final int SIZE = 30;
     public boolean freeze;
     public boolean flat;
-    public static final int max_X = 900;
-    public static final int max_Y = 900;
+    public static final int max_X = 300;
+    public static final int max_Y = 600;
 
     public Shape(){
         this.allblocks = new ArrayList<>();
@@ -59,7 +59,7 @@ public class Shape {
             }
         }
     }
-    public void rotate_notflat(){
+    private void rotate_notflat(){
         double[] axis = new double[2];
 
         double allX = 0 ;
@@ -70,7 +70,7 @@ public class Shape {
 
 
         axis[0] = allX/this.allblocks.size();
-        axis[1] = (this.allblocks.get(0).y - this.allblocks.size()/2.0*SIZE)+SIZE*2;
+        axis[1] = (this.allblocks.get(0).y - this.allblocks.size()/2.0*SIZE);
 
 
         int size = 0;
@@ -81,7 +81,7 @@ public class Shape {
             size+=SIZE;
         }
 
-    } public void rotate_flat(){
+    } private void rotate_flat(){
         double[] axis = new double[2];
         double allY = 0 ;
         for(Block b: this.allblocks){
@@ -92,7 +92,7 @@ public class Shape {
         axis[1] = allY/this.allblocks.size();
 
 
-        int size = 15;
+        int size = 0;
         for(Block b: this.allblocks){
             b.x = axis[0]+size;
             b.y = axis[1];
