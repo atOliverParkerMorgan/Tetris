@@ -16,11 +16,17 @@ public class Shape {
     public static final int max_X = 300;
     public static final int max_Y = 600;
 
+    public boolean atLeftBound;
+    public boolean atRightBound;
+
     public Shape(){
         this.allblocks = new ArrayList<>();
         this.number_of_squars = 4;
         this.freeze = false;
         this.flat = true;
+
+        this.atLeftBound = false;
+        this.atRightBound = false;
 
     }
     public void move_down(){
@@ -34,8 +40,10 @@ public class Shape {
         for(Block b: this.allblocks){
             if (b.x - SIZE< 0) {
                 move = false;
+                this.atLeftBound = true;
                 break;
             }
+            else if(b.x-SIZE<SIZE)
         }
         if (move){
             for (Block block : this.allblocks) {
@@ -50,6 +58,8 @@ public class Shape {
         for(Block b: this.allblocks){
             if (b.x+SIZE*2 > max_X) {
                 move = false;
+                this.atRightBound = true;
+
                 break;
             }
         }if(move){
@@ -70,7 +80,7 @@ public class Shape {
 
 
         axis[0] = allX/this.allblocks.size();
-        axis[1] = (this.allblocks.get(0).y - this.allblocks.size()/2.0*SIZE);
+        axis[1] = (this.allblocks.get(0).y - this.allblocks.size()/2*SIZE);
 
 
         int size = 0;
@@ -88,7 +98,7 @@ public class Shape {
             allY+=b.y;
         }
 
-        axis[0] = (this.allblocks.get(0).x - this.allblocks.size()/2.0*SIZE);
+        axis[0] = ((int)this.allblocks.get(0).x - this.allblocks.size()/2*SIZE);
         axis[1] = allY/this.allblocks.size();
 
 
