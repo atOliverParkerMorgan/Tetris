@@ -26,8 +26,12 @@ public class MAIN extends PApplet {
 
 
         // the place where your images are saved
-        String base_dir = "C:\\Users\\2019-e-morgan\\IdeaProjects\\Tetris\\src\\main\\java\\proc\\sketches\\sprites\\";
 
+        // school dir
+        //C:\Users\2019-e-morgan\IdeaProjects\Tetris\src\main\java\proc\sketches\sprites\
+        String base_dir = "C:\\Users\\olive\\IdeaProjects\\tetris\\src\\main\\java\\proc\\sketches\\sprites\\";
+
+        //all blocks
         darkBlue_block = loadImage(base_dir+"darkBlue.png");
         lightBlue_block = loadImage(base_dir+"lightBlue.png");
         Green_block = loadImage(base_dir + "Green.png");
@@ -48,8 +52,40 @@ public class MAIN extends PApplet {
 
 
     }public void draw(){
-
+        //white background
         background(255,255,255);
+
+        // draw lines x
+        float cord_line1_x = 0;
+        float cord_line1_y = 0;
+        float cord_line2_x = 0;
+        float cord_line2_y = Shape.max_Y;
+
+        for(int i=0;i<Shape.max_X/Shape.SIZE;i++){
+
+
+            line(cord_line1_x,cord_line1_y,cord_line2_x,cord_line2_y);
+            fill(0,0,0);
+            cord_line1_x += Shape.SIZE;
+            cord_line2_x += Shape.SIZE;
+
+        }
+
+        // draw lines y
+        cord_line1_x = 0;
+        cord_line1_y = 0;
+        cord_line2_x = Shape.max_X;
+        cord_line2_y = 0;
+
+        for(int i=0;i<Shape.max_Y/Shape.SIZE;i++){
+
+
+            line(cord_line1_x,cord_line1_y,cord_line2_x,cord_line2_y);
+            fill(0,0,0);
+            cord_line1_y += Shape.SIZE;
+            cord_line2_y += Shape.SIZE;
+        }
+
 
 
         for(Block block: Test.allblocks){

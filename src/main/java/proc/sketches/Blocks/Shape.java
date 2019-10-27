@@ -43,7 +43,7 @@ public class Shape {
                 this.atLeftBound = true;
                 break;
             }
-            else if(b.x-SIZE<SIZE)
+           // else if(b.x-SIZE<SIZE)
         }
         if (move){
             for (Block block : this.allblocks) {
@@ -72,19 +72,13 @@ public class Shape {
     private void rotate_notflat(){
         double[] axis = new double[2];
 
-        double allX = 0 ;
-        for(Block b: this.allblocks){
-            allX+=b.x;
-        }
-
-
-
-        axis[0] = allX/this.allblocks.size();
-        axis[1] = (this.allblocks.get(0).y - this.allblocks.size()/2*SIZE);
+        axis[0] = this.allblocks.get(2).x;
+        axis[1] = (int) (this.allblocks.get(0).y - this.allblocks.size()/2*SIZE);
 
 
         int size = 0;
         for(Block b: this.allblocks){
+
             b.x = axis[0];
             b.y = axis[1]+size;
 
@@ -92,18 +86,37 @@ public class Shape {
         }
 
     } private void rotate_flat(){
+        // array with x and y
         double[] axis = new double[2];
-        double allY = 0 ;
-        for(Block b: this.allblocks){
-            allY+=b.y;
-        }
 
-        axis[0] = ((int)this.allblocks.get(0).x - this.allblocks.size()/2*SIZE);
-        axis[1] = allY/this.allblocks.size();
+        axis[0] = (int)(this.allblocks.get(0).x - this.allblocks.size()/2*SIZE);
+        axis[1] = this.allblocks.get(2).y;
 
 
         int size = 0;
         for(Block b: this.allblocks){
+            //bound check
+            if(b.x<=SIZE){
+                int s = 0;
+                for(Block b1: this.allblocks) {
+                    b1.x = s;
+                    b1.y = axis[1];
+
+                    s+=SIZE;
+                }
+                break;
+            }else if(b.x+SIZE>=Shape.max_X){
+                System.out.println("HERE");
+                int s = Shape.max_X-SIZE;
+                for(Block b1: this.allblocks) {
+                    b1.x = s;
+                    b1.y = axis[1];
+
+                    s-=SIZE;
+                }
+                break;
+            }
+
             b.x = axis[0]+size;
             b.y = axis[1];
 
