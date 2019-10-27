@@ -2,6 +2,10 @@ package proc.sketches.Blocks;
 
 import proc.sketches.Blocks.Shapes.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.SimpleTimeZone;
@@ -11,23 +15,28 @@ public class Shape {
     public ArrayList<Block> allblocks;
     public int number_of_squars;
     public static final int SIZE = 30;
-    public boolean freeze;
     public boolean flat;
     public static final int max_X = 300;
     public static final int max_Y = 600;
 
-    public boolean atLeftBound;
-    public boolean atRightBound;
-
     public Shape(){
         this.allblocks = new ArrayList<>();
         this.number_of_squars = 4;
-        this.freeze = false;
         this.flat = true;
-
-        this.atLeftBound = false;
-        this.atRightBound = false;
-
+    }
+    public Shape copy() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(this);
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            return (Shape) ois.readObject();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     public void move_down(){
         for(Block block: this.allblocks){
@@ -40,10 +49,8 @@ public class Shape {
         for(Block b: this.allblocks){
             if (b.x - SIZE< 0) {
                 move = false;
-                this.atLeftBound = true;
                 break;
             }
-           // else if(b.x-SIZE<SIZE)
         }
         if (move){
             for (Block block : this.allblocks) {
@@ -58,8 +65,6 @@ public class Shape {
         for(Block b: this.allblocks){
             if (b.x+SIZE*2 > max_X) {
                 move = false;
-                this.atRightBound = true;
-
                 break;
             }
         }if(move){
@@ -69,6 +74,8 @@ public class Shape {
             }
         }
     }
+
+
     private void rotate_notflat(){
         double[] axis = new double[2];
 
@@ -106,7 +113,6 @@ public class Shape {
                 }
                 break;
             }else if(b.x+SIZE>=Shape.max_X){
-                System.out.println("HERE");
                 int s = Shape.max_X-SIZE;
                 for(Block b1: this.allblocks) {
                     b1.x = s;
@@ -132,6 +138,7 @@ public class Shape {
             this.flat = true;
         }
     }
+
 
 
 

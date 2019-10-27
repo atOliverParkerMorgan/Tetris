@@ -6,13 +6,17 @@ import proc.sketches.Blocks.Shapes.Blue_line;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 public class MAIN extends PApplet {
 
-    private Blue_line Test;
+    private List<Shape> all_Shapes = new ArrayList<Shape>(){};
+
+    private Shape moving_shape = new Blue_line();
 
     private PImage darkBlue_block;
     private PImage lightBlue_block;
@@ -43,7 +47,8 @@ public class MAIN extends PApplet {
 
         // Canvas
         size(Shape.max_X, Shape.max_Y, JAVA2D);
-        Test = new Blue_line();
+        moving_shape = new Blue_line();
+        all_Shapes.add(moving_shape);
         // And From your main() method or any other method
         Timer timer = new Timer();
         timer.schedule(new Move(), 0, 1000);
@@ -87,30 +92,61 @@ public class MAIN extends PApplet {
         }
 
 
+        //draw
+        boolean new_shape = false;
+        for(Shape shape: all_Shapes) {
+            for (Block block : shape.allblocks) {
+                int x = (int) block.x;
+                int y = (int) block.y;
 
-        for(Block block: Test.allblocks){
-            int x = (int) block.x;
-            int y = (int) block.y;
+                image(darkBlue_block, x, y);
 
-            image(darkBlue_block, x,y);
-
+            }
         }
+
+        //collision logic
+        for(Block block: moving_shape.allblocks){
+            // at the bottom of the screen
+            if(block.y+Shape.SIZE==Shape.max_Y){
+                moving_shape = new Blue_line();
+                all_Shapes.add(moving_shape);
+                break;
+            }
+            //checking for all collisions with all blocks
+            else{
+                for(int index = 0; index<all_Shapes.size()-1;index++){
+                    for(Block b: all_Shapes.get(index).allblocks){
+                        if(b.x==block.x && b.y==block.y+Shape.SIZE){
+                            moving_shape = new Blue_line();
+                            all_Shapes.add(moving_shape);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
 
     }
     public void keyPressed() {
         if (keyCode == LEFT) {
-            Test.move_left();
+            moving_shape.move_left();
         }else if (keyCode == RIGHT) {
-            Test.move_right();
+            moving_shape.move_right();
         }else if(keyCode == UP){
-            Test.rotate();
+            moving_shape.rotate();
+        }else if(keyCode == DOWN){
+            moving_shape.move_down();
         }
     }
 
 
     class Move extends TimerTask {
         public void run() {
-            Test.move_down();
+            moving_shape.move_down();
         }
     }
 

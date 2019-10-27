@@ -1,4 +1,6 @@
 package proc.sketches.Blocks.Shapes;
 
-public class Purple_T {
+import proc.sketches.Blocks.Shape;
+
+public class Purple_T extends Shape {
 }
