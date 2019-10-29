@@ -1,6 +1,7 @@
 package proc.sketches;
 
 import proc.sketches.Blocks.Block;
+import proc.sketches.Grid.Spot;
 import proc.sketches.Shapes.Blue_line;
 import proc.sketches.Shapes.Shape;
 import processing.core.PApplet;
@@ -27,6 +28,13 @@ public class MAIN extends PApplet {
     private PImage Red_block;
 
     public void settings(){
+
+        // init all spots on grid
+        for(int x=0;x<Shape.max_X/Shape.SIZE;x++){
+            for(int y=0;y<Shape.max_Y/Shape.SIZE;y++){
+                Spot.Grid[x][y] = new Spot(x,y);
+            }
+        }
 
 
         // the place where your images are saved
@@ -92,9 +100,11 @@ public class MAIN extends PApplet {
         }
 
 
-        // draw everything else
         for(Shape shape: Shape.all_Shapes) {
             for (Block block : shape.allblocks) {
+               Spot.getSpot((int)block.x/Shape.SIZE,(int)block.y/Shape.SIZE).occupied = true;
+
+
                 int x = (int) block.x;
                 int y = (int) block.y;
 
@@ -129,6 +139,9 @@ public class MAIN extends PApplet {
 
 
 
+
+
+
     }
     public void keyPressed() {
         if (keyCode == LEFT) {
@@ -148,8 +161,10 @@ public class MAIN extends PApplet {
 
     class Move extends TimerTask {
         public void run() {
+
             moving_shape.move_down();
         }
+
     }
 
 
