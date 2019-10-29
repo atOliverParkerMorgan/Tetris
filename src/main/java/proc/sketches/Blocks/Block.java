@@ -1,6 +1,8 @@
 package proc.sketches.Blocks;
 
-public class Block {
+import java.io.Serializable;
+
+public class Block implements Serializable {
     public double x;
     public double y;
 
@@ -11,12 +13,11 @@ public class Block {
     public boolean stocked;
 
 
-    public Block(int size, int[] colour, double x, double y){
+    public Block(int size,double x, double y){
         this.x = x;
         this.y = y;
         this.stocked = false;
         this.size = size;
-        this.colour = colour;
     }
 
 }

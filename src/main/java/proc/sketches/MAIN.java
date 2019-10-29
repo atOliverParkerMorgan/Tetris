@@ -3,6 +3,7 @@ package proc.sketches;
 import proc.sketches.Blocks.Block;
 import proc.sketches.Grid.Spot;
 import proc.sketches.Shapes.Blue_line;
+import proc.sketches.Shapes.DarkBlue_L;
 import proc.sketches.Shapes.Shape;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -17,7 +18,7 @@ public class MAIN extends PApplet {
 
 
 
-    private Shape moving_shape = new Blue_line(0);
+    private Shape moving_shape;
 
     private PImage darkBlue_block;
     private PImage lightBlue_block;
@@ -27,15 +28,9 @@ public class MAIN extends PApplet {
     private PImage Orange_block;
     private PImage Red_block;
 
+
+
     public void settings(){
-
-        // init all spots on grid
-        for(int x=0;x<Shape.max_X/Shape.SIZE;x++){
-            for(int y=0;y<Shape.max_Y/Shape.SIZE;y++){
-                Spot.Grid[x][y] = new Spot(x,y);
-            }
-        }
-
 
         // the place where your images are saved
 
@@ -55,14 +50,11 @@ public class MAIN extends PApplet {
 
         // Canvas
         size(Shape.max_X, Shape.max_Y, JAVA2D);
-        moving_shape = new Blue_line(0);
+        moving_shape = pickRandomShape();
         Shape.all_Shapes.add(moving_shape);
         // And From your main() method or any other method
         Timer timer = new Timer();
         timer.schedule(new Move(), 0, 1000);
-
-
-
 
     }public void draw(){
         //white background
@@ -99,25 +91,39 @@ public class MAIN extends PApplet {
             cord_line2_y += Shape.SIZE;
         }
 
+        //show moving
+        for(Block b :moving_shape.allblocks){
+            int x = (int) b.x;
+            int y = (int) b.y;
 
+            if(moving_shape.type==0) {
+                image(lightBlue_block, x, y);
+            }else if(moving_shape.type==1){
+                image(darkBlue_block, x, y);
+            }
+        }
+
+        //show everything else
         for(Shape shape: Shape.all_Shapes) {
             for (Block block : shape.allblocks) {
-               Spot.getSpot((int)block.x/Shape.SIZE,(int)block.y/Shape.SIZE).occupied = true;
-
-
                 int x = (int) block.x;
                 int y = (int) block.y;
 
-                image(darkBlue_block, x, y);
+                if(shape.type==0) {
+                    image(lightBlue_block, x, y);
+                }else if(shape.type==1){
+                    image(darkBlue_block, x, y);
+                }
 
             }
         }
 
         //collision logic
+        main_loop:
         for(Block block: moving_shape.allblocks){
             // at the bottom of the screen
             if(block.y+Shape.SIZE==Shape.max_Y){
-                moving_shape = new Blue_line(0);
+                moving_shape = pickRandomShape();
                 Shape.all_Shapes.add(moving_shape);
                 break;
             }
@@ -126,9 +132,11 @@ public class MAIN extends PApplet {
                 for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
                     for(Block b: Shape.all_Shapes.get(index).allblocks){
                         if(b.x==block.x && b.y==block.y+Shape.SIZE){
-                            moving_shape = new Blue_line(0);
+                            moving_shape = pickRandomShape();
                             Shape.all_Shapes.add(moving_shape);
-                            break;
+
+
+                            break main_loop;
                         }
                     }
                 }
@@ -146,14 +154,14 @@ public class MAIN extends PApplet {
     public void keyPressed() {
         if (keyCode == LEFT) {
             moving_shape.move_left();
-        }if (keyCode == RIGHT) {
+        }else if (keyCode == RIGHT) {
             moving_shape.move_right();
-        }if(keyCode == UP){
+        }else if(keyCode == UP){
             if(moving_shape.type==0) {
                 Blue_line line = (Blue_line) moving_shape;
                 line.rotate();
             }
-        }if(keyCode == DOWN){
+        }else if(keyCode == DOWN) {
             moving_shape.move_down();
         }
     }
@@ -163,6 +171,15 @@ public class MAIN extends PApplet {
         public void run() {
 
             moving_shape.move_down();
+        }
+
+    }
+    private Shape pickRandomShape(){
+        int rand = (int)(Math.random() * 2);
+        if(rand==0){
+            return new Blue_line();
+        }else{
+            return new DarkBlue_L();
         }
 
     }

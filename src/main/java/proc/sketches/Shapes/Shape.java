@@ -1,10 +1,12 @@
 package proc.sketches.Shapes;
 
 import proc.sketches.Blocks.Block;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shape {
+public class Shape implements Serializable {
     public ArrayList<Block> allblocks;
     public static final int SIZE = 30;
     public static final int max_X = 300;
@@ -21,21 +23,20 @@ public class Shape {
         this.allblocks = new ArrayList<>();
         this.type = type;
     }
-    //public Shape copy() {
-    //    try {
-    //        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    //        ObjectOutputStream oos = new ObjectOutputStream(baos);
-    //        oos.writeObject(this);
-    //        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-    //        ObjectInputStream ois = new ObjectInputStream(bais);
-    //        return (Shape) ois.readObject();
-    //    }
-    //    catch (Exception e) {
-    //        e.printStackTrace();
-    //        return null;
-    //    }
-    //}
-
+   // public Shape copy() {
+   //     try {
+   //         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+   //         ObjectOutputStream oos = new ObjectOutputStream(baos);
+   //         oos.writeObject(this);
+   //         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+   //         ObjectInputStream ois = new ObjectInputStream(bais);
+   //         return (Shape) ois.readObject();
+   //     }
+   //     catch (Exception e) {
+   //         e.printStackTrace();
+   //         return null;
+   //     }
+   // }
     public boolean overlap(double x, double y){
         for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
             for(Block block: Shape.all_Shapes.get(index).allblocks){
