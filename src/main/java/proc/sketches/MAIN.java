@@ -1,8 +1,8 @@
 package proc.sketches;
 
 import proc.sketches.Blocks.Block;
-import proc.sketches.Blocks.Shape;
-import proc.sketches.Blocks.Shapes.Blue_line;
+import proc.sketches.Shapes.Blue_line;
+import proc.sketches.Shapes.Shape;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -14,9 +14,9 @@ import java.util.TimerTask;
 
 public class MAIN extends PApplet {
 
-    private List<Shape> all_Shapes = new ArrayList<Shape>(){};
 
-    private Shape moving_shape = new Blue_line();
+
+    private Shape moving_shape = new Blue_line(0);
 
     private PImage darkBlue_block;
     private PImage lightBlue_block;
@@ -47,8 +47,8 @@ public class MAIN extends PApplet {
 
         // Canvas
         size(Shape.max_X, Shape.max_Y, JAVA2D);
-        moving_shape = new Blue_line();
-        all_Shapes.add(moving_shape);
+        moving_shape = new Blue_line(0);
+        Shape.all_Shapes.add(moving_shape);
         // And From your main() method or any other method
         Timer timer = new Timer();
         timer.schedule(new Move(), 0, 1000);
@@ -92,9 +92,8 @@ public class MAIN extends PApplet {
         }
 
 
-        //draw
-        boolean new_shape = false;
-        for(Shape shape: all_Shapes) {
+        // draw everything else
+        for(Shape shape: Shape.all_Shapes) {
             for (Block block : shape.allblocks) {
                 int x = (int) block.x;
                 int y = (int) block.y;
@@ -108,17 +107,17 @@ public class MAIN extends PApplet {
         for(Block block: moving_shape.allblocks){
             // at the bottom of the screen
             if(block.y+Shape.SIZE==Shape.max_Y){
-                moving_shape = new Blue_line();
-                all_Shapes.add(moving_shape);
+                moving_shape = new Blue_line(0);
+                Shape.all_Shapes.add(moving_shape);
                 break;
             }
             //checking for all collisions with all blocks
             else{
-                for(int index = 0; index<all_Shapes.size()-1;index++){
-                    for(Block b: all_Shapes.get(index).allblocks){
+                for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
+                    for(Block b: Shape.all_Shapes.get(index).allblocks){
                         if(b.x==block.x && b.y==block.y+Shape.SIZE){
-                            moving_shape = new Blue_line();
-                            all_Shapes.add(moving_shape);
+                            moving_shape = new Blue_line(0);
+                            Shape.all_Shapes.add(moving_shape);
                             break;
                         }
                     }
@@ -134,11 +133,14 @@ public class MAIN extends PApplet {
     public void keyPressed() {
         if (keyCode == LEFT) {
             moving_shape.move_left();
-        }else if (keyCode == RIGHT) {
+        }if (keyCode == RIGHT) {
             moving_shape.move_right();
-        }else if(keyCode == UP){
-            moving_shape.rotate();
-        }else if(keyCode == DOWN){
+        }if(keyCode == UP){
+            if(moving_shape.type==0) {
+                Blue_line line = (Blue_line) moving_shape;
+                line.rotate();
+            }
+        }if(keyCode == DOWN){
             moving_shape.move_down();
         }
     }
