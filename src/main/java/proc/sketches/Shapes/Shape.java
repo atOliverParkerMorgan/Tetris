@@ -113,10 +113,37 @@ public class Shape implements Serializable {
         }
     }
 
+    public boolean bound_check(double[] axis, ArrayList<Block> allblocks, Block b){
 
+            //bound check
+            if (b.x <= SIZE) {
+                int s = 0;
+                for (Block b1 : allblocks) {
+                    b1.x = s;
+                    b1.y = axis[1];
 
+                    s += SIZE;
+                }
+                return true;
+            } else if (b.x + SIZE >= Shape.max_X) {
+                int s = Shape.max_X - SIZE;
+                for (Block b1 : allblocks) {
+                    b1.x = s;
+                    b1.y = axis[1];
 
-
-
+                    s -= SIZE;
+                }
+                return true;
+            }
+            return false;
+    }
 
 }
+
+
+
+
+
+
+
+

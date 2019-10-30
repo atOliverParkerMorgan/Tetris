@@ -29,7 +29,6 @@ public class Blue_line extends Shape implements Serializable {
 
     private void rotate_notflat(){
         double[] axis = new double[2];
-        System.out.println("not flat");
 
         axis[0] = this.allblocks.get(2).x;
         axis[1] = (int) (this.allblocks.get(0).y - this.allblocks.size()/2*SIZE);
@@ -42,7 +41,6 @@ public class Blue_line extends Shape implements Serializable {
 
             if (overlap(axis[0], axis[1] + size)) {
                 noMove = true;
-                System.out.println("Blocked not flat");
                 break;
             }
 
@@ -67,7 +65,6 @@ public class Blue_line extends Shape implements Serializable {
     private void rotate_flat(){
         // array with x and y
         double[] axis = new double[2];
-        System.out.println("flat");
 
         axis[0] = (int)(this.allblocks.get(0).x - this.allblocks.size()/2*SIZE);
         axis[1] = this.allblocks.get(2).y;
@@ -79,7 +76,6 @@ public class Blue_line extends Shape implements Serializable {
 
             if (overlap(axis[0] + size, axis[1])) {
                 noMove = true;
-                System.out.println("Blocked flat");
 
                 break;
             }
@@ -92,23 +88,7 @@ public class Blue_line extends Shape implements Serializable {
 
             for (Block b : this.allblocks) {
                 //bound check
-                if (b.x <= SIZE) {
-                    int s = 0;
-                    for (Block b1 : this.allblocks) {
-                        b1.x = s;
-                        b1.y = axis[1];
-
-                        s += SIZE;
-                    }
-                    break;
-                } else if (b.x + SIZE >= Shape.max_X) {
-                    int s = Shape.max_X - SIZE;
-                    for (Block b1 : this.allblocks) {
-                        b1.x = s;
-                        b1.y = axis[1];
-
-                        s -= SIZE;
-                    }
+                if(bound_check(axis,this.allblocks,b)){
                     break;
                 }
 
@@ -121,6 +101,9 @@ public class Blue_line extends Shape implements Serializable {
         }
 
     }
+
+
+
     public void rotate(){
         if(this.flat){
             this.rotate_notflat();
