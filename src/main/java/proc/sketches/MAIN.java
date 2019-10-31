@@ -159,10 +159,10 @@ public class MAIN extends PApplet {
         }else if(keyCode == UP){
             if(moving_shape.type==0) {
                 Blue_line line = (Blue_line) moving_shape;
-                line.rotate();
+                line.rotate_All();
             }else if(moving_shape.type==1){
                 DarkBlue_L L = (DarkBlue_L) moving_shape;
-                L.rotate();
+                L.rotate_All();
             }
 
         }else if(keyCode == DOWN) {

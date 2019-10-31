@@ -113,29 +113,77 @@ public class Shape implements Serializable {
         }
     }
 
-    public boolean bound_check(double[] axis, ArrayList<Block> allblocks, Block b){
+    private boolean bound_check(int[][] all,int addToBoundLeft,int addToBoundRight){
 
-            //bound check
-            if (b.x <= SIZE) {
-                int s = 0;
-                for (Block b1 : allblocks) {
-                    b1.x = s;
-                    b1.y = axis[1];
+        int index = 0;
+        for(Block b: this.allblocks) {
+                int[] axis = all[index];
+                //bound check
+                if (b.x + axis[0] < 0) {
+                    index = 0;
+                    for(Block b1: this.allblocks) {
+                        axis = all[index];
+                        b1.x += axis[0]+addToBoundLeft;
+                        b1.y += axis[1];
 
-                    s += SIZE;
+                        index++;
+                    }
+
+                    return true;
+                } else if (b.x + axis[0] + SIZE > Shape.max_X) {
+                    index = 0;
+                    for(Block b1: this.allblocks) {
+                        axis = all[index];
+                        b1.x += axis[0]-addToBoundRight;
+                        b1.y += axis[1];
+
+                        index++;
+                    }
+
+                    return true;
                 }
-                return true;
-            } else if (b.x + SIZE >= Shape.max_X) {
-                int s = Shape.max_X - SIZE;
-                for (Block b1 : allblocks) {
-                    b1.x = s;
-                    b1.y = axis[1];
+                index++;
+        }
+        return false;
+    }
+    void rotate(int[][] all,int addToBoundLeft, int addToBoundRight){
 
-                    s -= SIZE;
+
+
+        boolean noMove = false;
+
+        main_loop:
+        for(Block b: this.allblocks) {
+            for (int[] axis : all) {
+
+                if (overlap(axis[0]+b.x, axis[1]+b.y)) {
+                    noMove = true;
+
+                    break main_loop;
                 }
-                return true;
+
+
             }
-            return false;
+        }
+        if (bound_check(all,addToBoundLeft,addToBoundRight)) {
+            noMove = true;
+        }
+
+        if(!noMove) {
+            byte index = 0;
+            for (Block b : this.allblocks) {
+                int[] axis = all[index];
+                //bound check
+
+                b.x += axis[0];
+                b.y += axis[1];
+
+                index++;
+
+
+            }
+        }
+
     }
 
 }
