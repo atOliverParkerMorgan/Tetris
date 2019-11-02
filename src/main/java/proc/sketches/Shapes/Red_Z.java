@@ -4,15 +4,15 @@ import proc.sketches.Blocks.Block;
 
 import java.io.Serializable;
 
-public class Green_S extends Shape implements Serializable {
+public class Red_Z extends Shape implements Serializable {
     private boolean flat;
 
     private final int[][] rotate1 = new int[][]{{2*SIZE,0},{SIZE,-SIZE},{0,0},{-SIZE,-SIZE}};
 
     private final int[][] rotate2 = new int[][]{{-2*SIZE,0},{-SIZE,SIZE},{0,0},{SIZE,SIZE}};
 
-    public Green_S() {
-        super(2);
+    public Red_Z() {
+        super(5);
 
         this.flat = false;
         int number_of_blocks = 4;

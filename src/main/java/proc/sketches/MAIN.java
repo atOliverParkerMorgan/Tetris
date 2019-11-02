@@ -2,9 +2,7 @@ package proc.sketches;
 
 import proc.sketches.Blocks.Block;
 import proc.sketches.Grid.Spot;
-import proc.sketches.Shapes.Blue_line;
-import proc.sketches.Shapes.DarkBlue_L;
-import proc.sketches.Shapes.Shape;
+import proc.sketches.Shapes.*;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -113,6 +111,16 @@ public class MAIN extends PApplet {
                     image(lightBlue_block, x, y);
                 }else if(shape.type==1){
                     image(darkBlue_block, x, y);
+                }else if(shape.type==2){
+                    image(Green_block, x, y);
+                }else if(shape.type==3){
+                    image(Orange_block, x, y);
+                }else if(shape.type==4){
+                    image(Purple_block, x, y);
+                }else if(shape.type==5){
+                    image(Red_block,x,y);
+                }else if(shape.type==6){
+                    image(Yellow_block, x, y);
                 }
 
             }
@@ -163,6 +171,15 @@ public class MAIN extends PApplet {
             }else if(moving_shape.type==1){
                 DarkBlue_L L = (DarkBlue_L) moving_shape;
                 L.rotate_All();
+            }else if(moving_shape.type==2){
+                Green_S S = (Green_S) moving_shape;
+                S.rotate_All();
+            }else if(moving_shape.type==3) {
+                Orange_L L = (Orange_L) moving_shape;
+                L.rotate_All();
+            }else if(moving_shape.type==4){
+                Purple_T T = (Purple_T) moving_shape;
+                T.rotate_All();
             }
 
         }else if(keyCode == DOWN) {
@@ -179,12 +196,20 @@ public class MAIN extends PApplet {
 
     }
     private Shape pickRandomShape(){
-        int rand = (int)(Math.random() * 2);
+        //int rand = (int)(Math.random() * 4);
+        int rand = 4;
         if(rand==0){
             return new Blue_line();
-        }else{
+        }else if(rand==1){
             return new DarkBlue_L();
+        }else if(rand==2){
+            return new Green_S();
+        }else if(rand==3){
+            return new Orange_L();
+        }else if(rand==4){
+            return new Purple_T();
         }
+        return null;
 
     }
 
