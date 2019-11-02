@@ -180,6 +180,9 @@ public class MAIN extends PApplet {
             }else if(moving_shape.type==4){
                 Purple_T T = (Purple_T) moving_shape;
                 T.rotate_All();
+            }else if(moving_shape.type==5){
+                Red_Z Z = (Red_Z) moving_shape;
+                Z.rotate_All();
             }
 
         }else if(keyCode == DOWN) {
@@ -197,7 +200,7 @@ public class MAIN extends PApplet {
     }
     private Shape pickRandomShape(){
         //int rand = (int)(Math.random() * 4);
-        int rand = 4;
+        int rand = 6;
         if(rand==0){
             return new Blue_line();
         }else if(rand==1){
@@ -208,7 +211,12 @@ public class MAIN extends PApplet {
             return new Orange_L();
         }else if(rand==4){
             return new Purple_T();
+        }else if(rand==5){
+            return new Red_Z();
+        }else if(rand==6){
+            return new Yellow_square();
         }
+
         return null;
 
     }

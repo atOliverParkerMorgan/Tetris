@@ -7,9 +7,9 @@ import java.io.Serializable;
 public class Red_Z extends Shape implements Serializable {
     private boolean flat;
 
-    private final int[][] rotate1 = new int[][]{{2*SIZE,0},{SIZE,-SIZE},{0,0},{-SIZE,-SIZE}};
+    private final int[][] rotate1 = new int[][]{{0,2*SIZE},{-SIZE,SIZE},{0,0},{-SIZE,-SIZE}};
 
-    private final int[][] rotate2 = new int[][]{{-2*SIZE,0},{-SIZE,SIZE},{0,0},{SIZE,SIZE}};
+    private final int[][] rotate2 = new int[][]{{0,-2*SIZE},{SIZE,-SIZE},{0,0},{SIZE,SIZE}};
 
     public Red_Z() {
         super(5);
@@ -21,7 +21,7 @@ public class Red_Z extends Shape implements Serializable {
         int start_Y = 0;
 
         for(int index = 0; index < number_of_blocks; index++){
-            int[][] structure = new int[][]{{0,0}, {0, SIZE}, {SIZE,SIZE}, {SIZE, 2*SIZE}};
+            int[][] structure = new int[][]{{0,0}, {SIZE, 0}, {SIZE,SIZE}, {2*SIZE, SIZE}};
             Block b = new Block(SIZE, start_X + structure[index][0], start_Y + structure[index][1]);
             this.allblocks.add(b);
         }
