@@ -1,5 +1,6 @@
 package proc.sketches;
 
+import com.sun.jna.platform.win32.WinUser;
 import proc.sketches.Blocks.Block;
 import proc.sketches.Grid.Spot;
 import proc.sketches.Shapes.*;
@@ -26,11 +27,24 @@ public class MAIN extends PApplet {
     private PImage Orange_block;
     private PImage Red_block;
 
+    private Spot[][] Grid = new Spot[Shape.num_Y][Shape.num_X];
+
 
 
     public void settings(){
 
         // the place where your images are saved
+        int index_x = 0;
+        int index_y = 0;
+
+        for(int y=0; y<Shape.max_Y; y+=Shape.SIZE){
+            index_x = 0;
+            for(int x=0; x<Shape.max_X; x+=Shape.SIZE){
+                Grid[index_y][index_x] = new Spot(x,y);
+                index_x++;
+            }
+            index_y++;
+        }
 
         // school dir
         //C:\Users\2019-e-morgan\IdeaProjects\Tetris\src\main\java\proc\sketches\sprites\
@@ -55,6 +69,8 @@ public class MAIN extends PApplet {
         timer.schedule(new Move(), 0, 1000);
 
     }public void draw(){
+        resetGrid();
+
         //white background
         background(255,255,255);
 
@@ -106,6 +122,18 @@ public class MAIN extends PApplet {
             for (Block block : shape.allblocks) {
                 int x = (int) block.x;
                 int y = (int) block.y;
+                int fix_x = 0;
+                int fix_y = 0;
+                if(x == Shape.SIZE){
+                    fix_x = 1;
+                }if(y == 0){
+                    fix_y = 1;
+                }
+
+
+
+                Grid[(y / Shape.SIZE) - fix_x][(x / Shape.SIZE) - fix_y].occupied = true;
+
 
                 if(shape.type==0) {
                     image(lightBlue_block, x, y);
@@ -125,6 +153,8 @@ public class MAIN extends PApplet {
 
             }
         }
+
+        Spot.deleteBlocks(Grid);
 
         //collision logic
         main_loop:
@@ -193,14 +223,14 @@ public class MAIN extends PApplet {
 
     class Move extends TimerTask {
         public void run() {
-
             moving_shape.move_down();
         }
 
     }
     private Shape pickRandomShape(){
-        //int rand = (int)(Math.random() * 4);
-        int rand = 6;
+        int rand = (int)(Math.random() * 7);
+        System.out.println(rand);
+
         if(rand==0){
             return new Blue_line();
         }else if(rand==1){
@@ -213,14 +243,18 @@ public class MAIN extends PApplet {
             return new Purple_T();
         }else if(rand==5){
             return new Red_Z();
-        }else if(rand==6){
+        }else{
             return new Yellow_square();
         }
 
-        return null;
-
     }
-
+    private void resetGrid(){
+        for(int y=0; y<Shape.num_Y; y++){
+            for(int x=0; x<Shape.num_X; x++) {
+                Grid[y][x].occupied = false;
+            }
+        }
+    }
 
 
 
