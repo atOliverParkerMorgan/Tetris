@@ -9,7 +9,11 @@ import java.util.List;
 
 public class Spot {
     public boolean occupied;
+
     public static int score = 0;
+    public static int startTime = 1000;
+    private final static int getFaster = 10;
+
     private int x;
     private int y;
 
@@ -57,6 +61,7 @@ public class Spot {
                     }
                 }
                 Spot.score+=Shape.num_X;
+                Spot.startTime-=Spot.getFaster;
                 for (Shape shape: Shape.all_Shapes){
                     for(Block block: shape.allblocks){
                         if(block.y>y){

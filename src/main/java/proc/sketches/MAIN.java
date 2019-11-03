@@ -35,7 +35,6 @@ public class MAIN extends PApplet {
     private Shape[] next_Shapes;
 
 
-
     public void settings(){
 
         next_Shapes = new Shape[3];
@@ -79,7 +78,7 @@ public class MAIN extends PApplet {
         Shape.all_Shapes.add(moving_shape);
         // And From your main() method or any other method
         Timer timer = new Timer();
-        timer.schedule(new Move(), 0, 1000);
+        timer.schedule(new Move(), 0, Spot.startTime);
 
     }public void draw(){
         resetGrid();
