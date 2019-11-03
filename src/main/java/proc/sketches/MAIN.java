@@ -1,6 +1,7 @@
 package proc.sketches;
 
 import com.sun.jna.platform.win32.WinUser;
+import org.w3c.dom.Text;
 import proc.sketches.Blocks.Block;
 import proc.sketches.Grid.Spot;
 import proc.sketches.Shapes.*;
@@ -27,14 +28,23 @@ public class MAIN extends PApplet {
     private PImage Orange_block;
     private PImage Red_block;
 
+    private PImage LOGO;
+
     private Spot[][] Grid = new Spot[Shape.num_Y][Shape.num_X];
+
+    private Shape[] next_Shapes;
 
 
 
     public void settings(){
 
+        next_Shapes = new Shape[3];
+        for(int i=0;i<3;i++){
+            next_Shapes[i] = pickRandomShape();
+        }
+
         // the place where your images are saved
-        int index_x = 0;
+        int index_x;
         int index_y = 0;
 
         for(int y=0; y<Shape.max_Y; y+=Shape.SIZE){
@@ -58,10 +68,13 @@ public class MAIN extends PApplet {
         Yellow_block = loadImage(base_dir + "Yellow.png");
         Red_block = loadImage(base_dir+"Red.png");
         Orange_block = loadImage(base_dir+"Orange.png");
+        LOGO = loadImage(base_dir+"Logo.png");
+
 
 
         // Canvas
-        size(Shape.max_X, Shape.max_Y, JAVA2D);
+        int UI_size = 250;
+        size(Shape.max_X+UI_size, Shape.max_Y, JAVA2D);
         moving_shape = pickRandomShape();
         Shape.all_Shapes.add(moving_shape);
         // And From your main() method or any other method
@@ -70,9 +83,41 @@ public class MAIN extends PApplet {
 
     }public void draw(){
         resetGrid();
-
         //white background
         background(255,255,255);
+
+        //UI
+        image(LOGO,Shape.max_X+15,15);
+        text("Score: "+Spot.score,Shape.max_X+15,140);
+        text("Next: ",Shape.max_X+15,170);
+        textSize(20);
+        int add_x = 300;
+        int add_y = 200;
+
+        for(Shape shape: next_Shapes){
+            for(Block block: shape.allblocks){
+                int x = (int) block.x + add_x;
+                int y = (int) block.y + add_y;
+
+                if(shape.type==0) {
+                    image(lightBlue_block, x-Shape.SIZE, y);
+                }else if(shape.type==1){
+                    image(darkBlue_block, x, y);
+                }else if(shape.type==2){
+                    image(Green_block, x-Shape.SIZE, y);
+                }else if(shape.type==3){
+                    image(Orange_block, x, y);
+                }else if(shape.type==4){
+                    image(Purple_block, x, y);
+                }else if(shape.type==5){
+                    image(Red_block,x-Shape.SIZE,y);
+                }else if(shape.type==6){
+                    image(Yellow_block, x-Shape.SIZE, y);
+                }
+            }
+            add_y+=130;
+
+        }
 
         // draw lines x
         float cord_line1_x = 0;
@@ -80,7 +125,7 @@ public class MAIN extends PApplet {
         float cord_line2_x = 0;
         float cord_line2_y = Shape.max_Y;
 
-        for(int i=0;i<Shape.max_X/Shape.SIZE;i++){
+        for(int i=0;i<(Shape.max_X/Shape.SIZE)+1;i++){
 
 
             line(cord_line1_x,cord_line1_y,cord_line2_x,cord_line2_y);
@@ -122,17 +167,11 @@ public class MAIN extends PApplet {
             for (Block block : shape.allblocks) {
                 int x = (int) block.x;
                 int y = (int) block.y;
-                int fix_x = 0;
-                int fix_y = 0;
-                if(x == Shape.SIZE){
-                    fix_x = 1;
-                }if(y == 0){
-                    fix_y = 1;
-                }
 
+               // System.out.println("X: "+x);
+               // System.out.println("Y: "+y);
 
-
-                Grid[(y / Shape.SIZE) - fix_x][(x / Shape.SIZE) - fix_y].occupied = true;
+                Spot.getSpot(Grid,x,y).occupied = true;
 
 
                 if(shape.type==0) {
@@ -161,7 +200,9 @@ public class MAIN extends PApplet {
         for(Block block: moving_shape.allblocks){
             // at the bottom of the screen
             if(block.y+Shape.SIZE==Shape.max_Y){
-                moving_shape = pickRandomShape();
+                moving_shape = next_Shapes[0];
+                Shift();
+
                 Shape.all_Shapes.add(moving_shape);
                 break;
             }
@@ -170,7 +211,9 @@ public class MAIN extends PApplet {
                 for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
                     for(Block b: Shape.all_Shapes.get(index).allblocks){
                         if(b.x==block.x && b.y==block.y+Shape.SIZE){
-                            moving_shape = pickRandomShape();
+                            moving_shape = next_Shapes[0];
+                            Shift();
+
                             Shape.all_Shapes.add(moving_shape);
 
 
@@ -228,8 +271,8 @@ public class MAIN extends PApplet {
 
     }
     private Shape pickRandomShape(){
-        int rand = (int)(Math.random() * 7);
-        System.out.println(rand);
+
+        int rand = (int) (Math.random() * 7);
 
         if(rand==0){
             return new Blue_line();
@@ -248,6 +291,13 @@ public class MAIN extends PApplet {
         }
 
     }
+    private void Shift(){
+        next_Shapes[0] = next_Shapes[1];
+        next_Shapes[1] = next_Shapes[2];
+        next_Shapes[2] = pickRandomShape();
+
+    }
+
     private void resetGrid(){
         for(int y=0; y<Shape.num_Y; y++){
             for(int x=0; x<Shape.num_X; x++) {
