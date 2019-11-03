@@ -2,7 +2,10 @@ package proc.sketches.Grid;
 
 import proc.sketches.Blocks.Block;
 import proc.sketches.Shapes.Shape;
+
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class Spot {
     public boolean occupied;
@@ -16,10 +19,10 @@ public class Spot {
         this.y = y;
     }
 
-    public static Spot getSpot(Spot[][] Grid,int x, int y){
+    public static Spot getSpot(Spot[][] Grid, int x, int y){
         for(Spot[] spots: Grid){
             for(Spot spot: spots){
-                if(spot.x==x && spot.y==x){
+                if(spot.x==x && spot.y==y){
                     return spot;
 
                 }
@@ -40,20 +43,28 @@ public class Spot {
             }
             if(num==Shape.num_X){
                 for(int x=0; x<Shape.max_X; x+=Shape.SIZE) {
-                    for(Iterator<Shape> iterator =  Shape.all_Shapes.iterator(); iterator.hasNext(); ){
-                        Shape blocks = iterator.next();
-                        for(Iterator<Block> iterator2 =  blocks.allblocks.iterator(); iterator.hasNext(); ){
-                            Block block = iterator2.next();
+                    for(Iterator<Shape> shape_iterator =  Shape.all_Shapes.iterator(); shape_iterator.hasNext(); ){
+                        Shape blocks = shape_iterator.next();
+                        for(Iterator<Block> block_iterable =  blocks.allblocks.iterator();block_iterable.hasNext(); ){
+                            Block block = block_iterable.next();
                             if(block.x==x && block.y==y*Shape.SIZE){
-                              iterator2.remove();
+                                block_iterable.remove();
                             }
                         }
                         if(blocks.allblocks.size()==0){
-                            iterator.remove();
+                            shape_iterator.remove();
                         }
                     }
                 }
                 Spot.score+=Shape.num_X;
+                for (Shape shape: Shape.all_Shapes){
+                    for(Block block: shape.allblocks){
+                        if(block.y>y){
+                            block.y+=Shape.SIZE;
+                        }
+                    }
+                }
+
             }
         }
 

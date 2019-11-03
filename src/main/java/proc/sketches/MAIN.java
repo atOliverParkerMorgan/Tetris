@@ -168,8 +168,6 @@ public class MAIN extends PApplet {
                 int x = (int) block.x;
                 int y = (int) block.y;
 
-               // System.out.println("X: "+x);
-               // System.out.println("Y: "+y);
 
                 Spot.getSpot(Grid,x,y).occupied = true;
 
