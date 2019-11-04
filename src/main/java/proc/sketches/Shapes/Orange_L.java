@@ -7,13 +7,13 @@ import java.io.Serializable;
 public class Orange_L extends Shape implements Serializable {
     private byte flat;
 
-    private final int[][] rotate1 = new int[][]{{0,2*SIZE},{SIZE,-SIZE},{0,0},{-SIZE,SIZE}};
+    private final int[][] rotate1 = new int[][]{{2*SIZE,0},{SIZE,-SIZE},{0,0},{-SIZE,SIZE}};
 
-    private final int[][] rotate2 = new int[][]{{-2*SIZE,0},{SIZE,SIZE},{0,0},{-SIZE,-SIZE}};
+    private final int[][] rotate2 = new int[][]{{0,2*SIZE},{SIZE,SIZE},{0,0},{-SIZE,-SIZE}};
 
-    private final int[][] rotate3 = new int[][]{{0,-2*SIZE},{-SIZE,SIZE},{0,0},{SIZE,-SIZE}};
+    private final int[][] rotate3 = new int[][]{{-2*SIZE,0},{-SIZE,SIZE},{0,0},{SIZE,-SIZE}};
 
-    private final int[][] rotate4 = new int[][]{{2*SIZE,0},{-SIZE,-SIZE},{0,0},{SIZE,SIZE}};
+    private final int[][] rotate4 = new int[][]{{0,-2*SIZE},{-SIZE,-SIZE},{0,0},{SIZE,SIZE}};
 
     public Orange_L() {
         super(3);
@@ -24,7 +24,7 @@ public class Orange_L extends Shape implements Serializable {
         int start_X = max_X/2-2*SIZE;
 
         for(int index = 0; index < number_of_blocks; index++){
-            int[][] structure = new int[][]{{SIZE,-SIZE}, {-SIZE, 0}, {0, 0}, {SIZE, 0}};
+            int[][] structure = new int[][]{{-SIZE,-SIZE}, {-SIZE, 0}, {0, 0}, {SIZE, 0}};
             Block b = new Block(SIZE, start_X + structure[index][0], SIZE + structure[index][1]);
             this.allblocks.add(b);
         }

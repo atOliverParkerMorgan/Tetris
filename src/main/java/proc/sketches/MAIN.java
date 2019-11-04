@@ -1,15 +1,11 @@
 package proc.sketches;
 
-import com.sun.jna.platform.win32.WinUser;
-import org.w3c.dom.Text;
 import proc.sketches.Blocks.Block;
 import proc.sketches.Grid.Spot;
 import proc.sketches.Shapes.*;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,7 +26,7 @@ public class MAIN extends PApplet {
 
     private PImage LOGO;
 
-    private Spot[][] Grid = new Spot[Shape.num_Y][Shape.num_X];
+
 
     private Shape[] next_Shapes;
 
@@ -43,17 +39,6 @@ public class MAIN extends PApplet {
         }
 
         // the place where your images are saved
-        int index_x;
-        int index_y = 0;
-
-        for(int y=0; y<Shape.max_Y; y+=Shape.SIZE){
-            index_x = 0;
-            for(int x=0; x<Shape.max_X; x+=Shape.SIZE){
-                Grid[index_y][index_x] = new Spot(x,y);
-                index_x++;
-            }
-            index_y++;
-        }
 
         // school dir
         //C:\Users\2019-e-morgan\IdeaProjects\Tetris\src\main\java\proc\sketches\sprites\
@@ -81,7 +66,7 @@ public class MAIN extends PApplet {
         timer.schedule(new Move(), 0, Spot.startTime);
 
     }public void draw(){
-        resetGrid();
+        Spot.resetGrid();
         //white background
         background(255,255,255);
 
@@ -149,27 +134,11 @@ public class MAIN extends PApplet {
             cord_line2_y += Shape.SIZE;
         }
 
-        //show moving
-        for(Block b :moving_shape.allblocks){
-            int x = (int) b.x;
-            int y = (int) b.y;
-
-            if(moving_shape.type==0) {
-                image(lightBlue_block, x, y);
-            }else if(moving_shape.type==1){
-                image(darkBlue_block, x, y);
-            }
-        }
-
         //show everything else
         for(Shape shape: Shape.all_Shapes) {
             for (Block block : shape.allblocks) {
                 int x = (int) block.x;
                 int y = (int) block.y;
-
-
-                Spot.getSpot(Grid,x,y).occupied = true;
-
 
                 if(shape.type==0) {
                     image(lightBlue_block, x, y);
@@ -187,47 +156,12 @@ public class MAIN extends PApplet {
                     image(Yellow_block, x, y);
                 }
 
+
+
+
             }
         }
-
-        Spot.deleteBlocks(Grid);
-
-        //collision logic
-        main_loop:
-        for(Block block: moving_shape.allblocks){
-            // at the bottom of the screen
-            if(block.y+Shape.SIZE==Shape.max_Y){
-                moving_shape = next_Shapes[0];
-                Shift();
-
-                Shape.all_Shapes.add(moving_shape);
-                break;
-            }
-            //checking for all collisions with all blocks
-            else{
-                for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
-                    for(Block b: Shape.all_Shapes.get(index).allblocks){
-                        if(b.x==block.x && b.y==block.y+Shape.SIZE){
-                            moving_shape = next_Shapes[0];
-                            Shift();
-
-                            Shape.all_Shapes.add(moving_shape);
-
-
-                            break main_loop;
-                        }
-                    }
-                }
-            }
-        }
-
-
-
-
-
-
-
-
+        checkCollision();
     }
     public void keyPressed() {
         if (keyCode == LEFT) {
@@ -269,7 +203,7 @@ public class MAIN extends PApplet {
     }
     private Shape pickRandomShape(){
 
-        int rand = (int) (Math.random() * 7);
+        int rand = 3;
 
         if(rand==0){
             return new Blue_line();
@@ -295,10 +229,35 @@ public class MAIN extends PApplet {
 
     }
 
-    private void resetGrid(){
-        for(int y=0; y<Shape.num_Y; y++){
-            for(int x=0; x<Shape.num_X; x++) {
-                Grid[y][x].occupied = false;
+    private void checkCollision(){
+        Spot.deleteBlocks();
+
+        //collision logic
+        main_loop:
+        for(Block block: moving_shape.allblocks){
+            // at the bottom of the screen
+            if(block.y+Shape.SIZE==Shape.max_Y){
+                moving_shape = next_Shapes[0];
+                Shift();
+
+                Shape.all_Shapes.add(moving_shape);
+                break;
+            }
+            //checking for all collisions with all blocks
+            else{
+                for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
+                    for(Block b: Shape.all_Shapes.get(index).allblocks){
+                        if(b.x==block.x && b.y==block.y+Shape.SIZE){
+                            moving_shape = next_Shapes[0];
+                            Shift();
+
+                            Shape.all_Shapes.add(moving_shape);
+
+
+                            break main_loop;
+                        }
+                    }
+                }
             }
         }
     }
