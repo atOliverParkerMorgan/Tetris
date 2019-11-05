@@ -17,4 +17,6 @@ public class Yellow_square extends Shape{
             this.allblocks.add(b);
         }
     }
+    // a square does not rotate so no rotate implementation
+
 }

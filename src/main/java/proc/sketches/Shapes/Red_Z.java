@@ -5,6 +5,7 @@ import proc.sketches.Blocks.Block;
 public class Red_Z extends Shape{
     private boolean flat;
 
+    // rotate positions
     private final int[][] rotate1 = new int[][]{{0,2*SIZE},{-SIZE,SIZE},{0,0},{-SIZE,-SIZE}};
 
     private final int[][] rotate2 = new int[][]{{0,-2*SIZE},{SIZE,-SIZE},{0,0},{SIZE,SIZE}};

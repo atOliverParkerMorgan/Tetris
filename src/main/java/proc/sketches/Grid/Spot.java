@@ -8,16 +8,17 @@ import java.util.Objects;
 public class Spot {
     private boolean occupied;
 
+
     public static int score = 0;
-    public static int startTime = 1000;
-    private final static int getFaster = 10;
+    public static int startTime = 1000; // start Time one second can get as low as 0,3 seconds
+    private final static int getFaster = 10; // rate of speeding up
 
     private int x;
     private int y;
 
     private static Spot[][] Grid = new Spot[Shape.num_Y][Shape.num_X];
 
-    // the place where your images are saved
+    // init gird with new Spots
     static {
         int index_x;
         int index_y = 0;
@@ -39,6 +40,8 @@ public class Spot {
     }
 
     private static Spot getSpot(int x, int y){
+        // look throw the grid => if Spot is found then return else return null
+
         for(Spot[] spots: Grid){
             for(Spot spot: spots){
                 if(spot.x==x && spot.y==y){
@@ -52,6 +55,8 @@ public class Spot {
         return null;
     }
     public static void resetGrid(){
+        // change all Spots to unoccupied the update all spots depending on the placement of all of the blocks
+
         for(int y=0; y<Shape.num_Y; y++){
             for(int x=0; x<Shape.num_X; x++) {
                 Grid[y][x].occupied = false;
@@ -71,7 +76,9 @@ public class Spot {
 
     }
 
-    private static boolean hasntUnder(double x, double y){
+    private static boolean hasNotUnder(double x, double y){
+        // Check if a block has a block under it
+
         resetGrid();
         System.out.println("Y: "+y);
         System.out.println((Spot.getSpot((int) x, (int) y + Shape.SIZE) != null));
@@ -86,6 +93,8 @@ public class Spot {
 
 
     public static void deleteBlocks(){
+        // delete a row of block if you find a full row of block
+
         int num;
         for(int y=0; y<Shape.num_Y; y++){
             num = 0;
@@ -111,11 +120,14 @@ public class Spot {
                         }
                     }
                 }
+                // make default time faster
                 Spot.score+=Shape.num_X;
                 Spot.startTime-=Spot.getFaster;
+
+                // move all blocks down
                 for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
                     for(Block block: Shape.all_Shapes.get(index).allblocks){
-                       while (hasntUnder(block.x,block.y))
+                       while (hasNotUnder(block.x,block.y))
                             block.y+=Shape.SIZE;
                         }
                    }

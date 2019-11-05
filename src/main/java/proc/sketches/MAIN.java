@@ -66,11 +66,14 @@ public class MAIN extends PApplet {
         timer.schedule(new Move(), 0, Spot.startTime);
 
     }public void draw(){
+
+        // reset & update the positions of blocks on the grid
         Spot.resetGrid();
-        //white background
+
+        // white background
         background(255,255,255);
 
-        //UI
+        // UI => Score
         image(LOGO,Shape.max_X+15,15);
         text("Score: "+Spot.score,Shape.max_X+15,140);
         text("Next: ",Shape.max_X+15,170);
@@ -78,6 +81,7 @@ public class MAIN extends PApplet {
         int add_x = 300;
         int add_y = 200;
 
+        //draw "NEXT" UI
         for(Shape shape: next_Shapes){
             for(Block block: shape.allblocks){
                 int x = (int) block.x + add_x;
@@ -103,7 +107,7 @@ public class MAIN extends PApplet {
 
         }
 
-        // draw lines x
+        // draw all lines x
         float cord_line1_x = 0;
         float cord_line1_y = 0;
         float cord_line2_x = 0;
@@ -119,7 +123,7 @@ public class MAIN extends PApplet {
 
         }
 
-        // draw lines y
+        //draw all lines y
         cord_line1_x = 0;
         cord_line1_y = 0;
         cord_line2_x = Shape.max_X;
@@ -134,7 +138,7 @@ public class MAIN extends PApplet {
             cord_line2_y += Shape.SIZE;
         }
 
-        //show everything else
+        //draw all blocks
         for(Shape shape: Shape.all_Shapes) {
             for (Block block : shape.allblocks) {
                 int x = (int) block.x;
@@ -161,14 +165,19 @@ public class MAIN extends PApplet {
 
             }
         }
+        // check for collision with the bottom of the screen and with other objects
         checkCollision();
     }
     public void keyPressed() {
         if (keyCode == LEFT) {
+            // move on block left
             moving_shape.move_left();
         }else if (keyCode == RIGHT) {
+            // move on block right
             moving_shape.move_right();
         }else if(keyCode == UP){
+            // rotate clockwise for all shape types
+
             if(moving_shape.type==0) {
                 Blue_line line = (Blue_line) moving_shape;
                 line.rotate_All();
@@ -190,6 +199,7 @@ public class MAIN extends PApplet {
             }
 
         }else if(keyCode == DOWN) {
+            // move on block down
             moving_shape.move_down();
             checkCollision();
         }
@@ -197,13 +207,14 @@ public class MAIN extends PApplet {
 
 
     class Move extends TimerTask {
+        // move down every second => gets faster
         public void run() {
             moving_shape.move_down();
         }
 
     }
     private Shape pickRandomShape(){
-
+        // generate a random shape
         int rand = (int)(Math.random()*7);
 
         if(rand==0){
@@ -224,6 +235,8 @@ public class MAIN extends PApplet {
 
     }
     private void Shift(){
+        // shift next_Shape list => next_Shape[0] will become moving_shape
+
         next_Shapes[0] = next_Shapes[1];
         next_Shapes[1] = next_Shapes[2];
         next_Shapes[2] = pickRandomShape();
@@ -231,13 +244,15 @@ public class MAIN extends PApplet {
     }
 
     private void checkCollision(){
-        Spot.deleteBlocks();
 
         //collision logic
         main_loop:
         for(Block block: moving_shape.allblocks){
             // at the bottom of the screen
             if(block.y+Shape.SIZE==Shape.max_Y){
+                //_.._
+
+                Spot.deleteBlocks();
                 moving_shape = next_Shapes[0];
                 Shift();
 
@@ -249,12 +264,15 @@ public class MAIN extends PApplet {
                 for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
                     for(Block b: Shape.all_Shapes.get(index).allblocks){
                         if(b.x==block.x && b.y==block.y+Shape.SIZE){
+                            //check if row is filled if so delete the row and move down all blocks
+                            Spot.deleteBlocks();
+
+                            // new shape
                             moving_shape = next_Shapes[0];
                             Shift();
-
                             Shape.all_Shapes.add(moving_shape);
 
-
+                            // break the main loop
                             break main_loop;
                         }
                     }

@@ -100,7 +100,7 @@ public class Shape implements Serializable {
         }
     }
 
-    private boolean bound_check(int[][] all,int addToBoundLeft,int addToBoundRight){
+    private boolean bound_check(int[][] all, int addToBoundRight){
 
         int index = 0;
         for(Block b: this.allblocks) {
@@ -110,7 +110,7 @@ public class Shape implements Serializable {
                     index = 0;
                     for(Block b1: this.allblocks) {
                         axis = all[index];
-                        b1.x += axis[0]+addToBoundLeft;
+                        b1.x += axis[0]+ Shape.SIZE;
                         b1.y += axis[1];
 
                         index++;
@@ -152,7 +152,7 @@ public class Shape implements Serializable {
 
             }
         }
-        if (bound_check(all, Shape.SIZE,addToBoundRight)) {
+        if (bound_check(all, addToBoundRight)) {
             noMove = true;
         }
 

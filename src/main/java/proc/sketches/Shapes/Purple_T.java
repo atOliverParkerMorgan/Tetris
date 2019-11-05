@@ -5,6 +5,7 @@ import proc.sketches.Blocks.Block;
 public class Purple_T extends Shape{
     private byte flat;
 
+    // rotate positions
     private final int[][] rotate1 = new int[][]{{-SIZE,-SIZE},{SIZE,-SIZE},{0,0},{-SIZE,SIZE}};
 
     private final int[][] rotate2 = new int[][]{{SIZE,-SIZE},{SIZE,SIZE},{0,0},{-SIZE,-SIZE}};

@@ -6,6 +6,7 @@ import proc.sketches.Blocks.Block;
 public class Orange_L extends Shape{
     private byte flat;
 
+    // rotate positions
     private final int[][] rotate1 = new int[][]{{2*SIZE,0},{SIZE,-SIZE},{0,0},{-SIZE,SIZE}};
 
     private final int[][] rotate2 = new int[][]{{0,2*SIZE},{SIZE,SIZE},{0,0},{-SIZE,-SIZE}};

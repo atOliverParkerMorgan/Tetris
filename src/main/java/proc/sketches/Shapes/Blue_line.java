@@ -8,6 +8,7 @@ public class Blue_line extends Shape implements Serializable {
 
     private boolean flat;
 
+    // rotate cords
     private final int[][] rotate1 = new int[][]{{-SIZE,SIZE},{0,0},{SIZE,-SIZE},{SIZE*2,-2*SIZE}};
     private final int[][] rotate2 = new int[][]{{SIZE,-SIZE},{0,0},{-SIZE,SIZE},{-SIZE*2,2*SIZE}};
 
@@ -17,8 +18,11 @@ public class Blue_line extends Shape implements Serializable {
         this.flat = true;
         int number_of_blocks = 4;
 
+        // half of the screen
         int start_X = max_X/2-SIZE;
         int start_Y = 0;
+
+        // starting structure
         final int[][] structure = new int[][]{{-SIZE,0},{0,0},{SIZE,0},{SIZE*2,0}};
 
         for(int index = 0; index < number_of_blocks; index++){
