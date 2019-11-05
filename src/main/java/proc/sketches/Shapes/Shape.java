@@ -23,21 +23,8 @@ public class Shape implements Serializable {
         this.allblocks = new ArrayList<>();
         this.type = type;
     }
-   // public Shape copy() {
-   //     try {
-   //         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-   //         ObjectOutputStream oos = new ObjectOutputStream(baos);
-   //         oos.writeObject(this);
-   //         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-   //         ObjectInputStream ois = new ObjectInputStream(bais);
-   //         return (Shape) ois.readObject();
-   //     }
-   //     catch (Exception e) {
-   //         e.printStackTrace();
-   //         return null;
-   //     }
-   // }
-    public boolean overlap(double x, double y){
+
+    private boolean overlap(double x, double y){
         for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
             for(Block block: Shape.all_Shapes.get(index).allblocks){
                 if(x == block.x && y == block.y){
@@ -146,7 +133,7 @@ public class Shape implements Serializable {
         }
         return false;
     }
-    void rotate(int[][] all,int addToBoundLeft, int addToBoundRight){
+    void rotate(int[][] all, int addToBoundRight){
 
 
 
@@ -165,7 +152,7 @@ public class Shape implements Serializable {
 
             }
         }
-        if (bound_check(all,addToBoundLeft,addToBoundRight)) {
+        if (bound_check(all, Shape.SIZE,addToBoundRight)) {
             noMove = true;
         }
 

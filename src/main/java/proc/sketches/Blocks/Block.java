@@ -8,15 +8,11 @@ public class Block implements Serializable {
 
     public int size;
 
-    public int[] colour;
-
-    public boolean stocked;
-
 
     public Block(int size,double x, double y){
         this.x = x;
         this.y = y;
-        this.stocked = false;
+
         this.size = size;
     }
 

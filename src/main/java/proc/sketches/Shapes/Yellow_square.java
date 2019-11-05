@@ -2,9 +2,7 @@ package proc.sketches.Shapes;
 
 import proc.sketches.Blocks.Block;
 
-import java.io.Serializable;
-
-public class Yellow_square extends Shape implements Serializable {
+public class Yellow_square extends Shape{
     public Yellow_square() {
         super(6);
 

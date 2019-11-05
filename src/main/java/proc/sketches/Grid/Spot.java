@@ -63,7 +63,7 @@ public class Spot {
                 int y = (int) block.y;
 
                 if (Spot.getSpot(x, y) != null) {
-                    Spot.getSpot(x, y).occupied = true;
+                    Objects.requireNonNull(Spot.getSpot(x, y)).occupied = true;
 
                 }
             }

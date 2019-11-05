@@ -204,7 +204,7 @@ public class MAIN extends PApplet {
     }
     private Shape pickRandomShape(){
 
-        int rand = 3;
+        int rand = (int)(Math.random()*7);
 
         if(rand==0){
             return new Blue_line();

@@ -2,9 +2,7 @@ package proc.sketches.Shapes;
 
 import proc.sketches.Blocks.Block;
 
-import java.io.Serializable;
-
-public class Red_Z extends Shape implements Serializable {
+public class Red_Z extends Shape{
     private boolean flat;
 
     private final int[][] rotate1 = new int[][]{{0,2*SIZE},{-SIZE,SIZE},{0,0},{-SIZE,-SIZE}};
@@ -34,11 +32,11 @@ public class Red_Z extends Shape implements Serializable {
     public void rotate_All(){
         if(!this.flat){
             int[][] all = new int[][]{rotate1[0],rotate1[1],rotate1[2],rotate1[3]};
-            this.rotate(all,SIZE,SIZE);
+            this.rotate(all, SIZE);
             this.flat = true;
         }else{
             int[][] all = new int[][]{rotate2[0],rotate2[1],rotate2[2],rotate2[3]};
-            this.rotate(all,SIZE,SIZE);
+            this.rotate(all, SIZE);
             this.flat = false;
         }
 
