@@ -42,7 +42,7 @@ public class MAIN extends PApplet {
 
         // school dir
         //C:\Users\2019-e-morgan\IdeaProjects\Tetris\src\main\java\proc\sketches\sprites\
-        String base_dir = "C:\\Users\\olive\\IdeaProjects\\tetris\\src\\main\\java\\proc\\sketches\\sprites\\";
+        String base_dir = "C:\\Users\\2019-e-morgan\\IdeaProjects\\Tetris\\src\\main\\java\\proc\\sketches\\sprites\\";
 
         //all blocks
         darkBlue_block = loadImage(base_dir+"darkBlue.png");
@@ -191,6 +191,7 @@ public class MAIN extends PApplet {
 
         }else if(keyCode == DOWN) {
             moving_shape.move_down();
+            checkCollision();
         }
     }
 

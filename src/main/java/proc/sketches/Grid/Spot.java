@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Objects;
 
 public class Spot {
-    public boolean occupied;
+    private boolean occupied;
 
     public static int score = 0;
     public static int startTime = 1000;
@@ -38,7 +38,7 @@ public class Spot {
         this.y = y;
     }
 
-    public static Spot getSpot( int x, int y){
+    private static Spot getSpot(int x, int y){
         for(Spot[] spots: Grid){
             for(Spot spot: spots){
                 if(spot.x==x && spot.y==y){
@@ -62,7 +62,10 @@ public class Spot {
                 int x = (int) block.x;
                 int y = (int) block.y;
 
-                Spot.getSpot(x, y).occupied = true;
+                if (Spot.getSpot(x, y) != null) {
+                    Spot.getSpot(x, y).occupied = true;
+
+                }
             }
         }
 
@@ -70,10 +73,14 @@ public class Spot {
 
     private static boolean hasntUnder(double x, double y){
         resetGrid();
-        if(y==600){
+        System.out.println("Y: "+y);
+        System.out.println((Spot.getSpot((int) x, (int) y + Shape.SIZE) != null));
+
+        if(y==Shape.max_Y-Shape.SIZE){
+            System.out.println("At the End");
             return false;
         }
-        else return Spot.getSpot((int) x, (int) y + Shape.SIZE) == null;
+        else return Spot.getSpot((int) x, (int) y + Shape.SIZE) != null;
 
     }
 
@@ -95,7 +102,6 @@ public class Spot {
                         for(Iterator<Block> block_iterable =  blocks.allblocks.iterator();block_iterable.hasNext(); ){
                             Block block = block_iterable.next();
                             if(block.x==x && block.y==y*Shape.SIZE){
-                                System.out.println(y*Shape.SIZE);
                                 block_iterable.remove();
                             }
                         }
@@ -107,8 +113,8 @@ public class Spot {
                 }
                 Spot.score+=Shape.num_X;
                 Spot.startTime-=Spot.getFaster;
-                for (Shape shape: Shape.all_Shapes){
-                   for(Block block: shape.allblocks){
+                for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
+                    for(Block block: Shape.all_Shapes.get(index).allblocks){
                        while (hasntUnder(block.x,block.y))
                             block.y+=Shape.SIZE;
                         }
