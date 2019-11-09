@@ -35,7 +35,11 @@ public class Shape implements Serializable {
         return false;
 
     }
-
+    public void move_up(){
+        for(Block block: this.allblocks){
+            block.y-=block.size;
+        }
+    }
 
     public void move_down(){
         for(Block block: this.allblocks){

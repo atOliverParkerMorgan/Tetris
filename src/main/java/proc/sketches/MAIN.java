@@ -250,8 +250,12 @@ public class MAIN extends PApplet {
         main_loop:
         for(Block block: moving_shape.allblocks){
             // at the bottom of the screen
-            if(block.y+Shape.SIZE==Shape.max_Y){
+            if(block.y==Shape.max_Y){
                 //_.._
+
+                // adds an extra second for last second moves
+                moving_shape.move_up();
+
 
                 Spot.deleteBlocks();
                 moving_shape = next_Shapes[0];
@@ -264,7 +268,11 @@ public class MAIN extends PApplet {
             else{
                 for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
                     for(Block b: Shape.all_Shapes.get(index).allblocks){
-                        if(b.x==block.x && b.y==block.y+Shape.SIZE){
+                        if(b.x==block.x && b.y==block.y){
+
+                            // adds an extra second for last second moves
+                            moving_shape.move_up();
+
                             //check if row is filled if so delete the row and move down all blocks
                             Spot.deleteBlocks();
 

@@ -76,7 +76,6 @@ public class Spot {
         }
 
     }
-
     public static void deleteBlocks() {
         // delete a row of block if you find a full row of block
         resetGrid();
