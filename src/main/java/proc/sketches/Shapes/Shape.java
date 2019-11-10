@@ -1,6 +1,7 @@
 package proc.sketches.Shapes;
 
 import proc.sketches.Blocks.Block;
+import proc.sketches.Grid.Spot;
 
 import java.io.*;
 import java.util.ArrayList;

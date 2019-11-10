@@ -12,7 +12,7 @@ import java.util.TimerTask;
 
 public class MAIN extends PApplet {
 
-
+    private boolean dead;
 
     private Shape moving_shape;
 
@@ -31,8 +31,11 @@ public class MAIN extends PApplet {
     private Shape[] next_Shapes;
 
 
+
+
     public void settings(){
 
+        dead = false;
         next_Shapes = new Shape[3];
         for(int i=0;i<3;i++){
             next_Shapes[i] = pickRandomShape();
@@ -75,7 +78,8 @@ public class MAIN extends PApplet {
 
         // UI => Score
         image(LOGO,Shape.max_X+15,15);
-        text("Score: "+Spot.score,Shape.max_X+15,140);
+        text("Level: "+(int) Spot.level,Shape.max_X+15,110);
+        text("Score: "+(int) Spot.score,Shape.max_X+15,140);
         text("Next: ",Shape.max_X+15,170);
         textSize(20);
         int add_x = 300;
@@ -166,42 +170,47 @@ public class MAIN extends PApplet {
             }
         }
         // check for collision with the bottom of the screen and with other objects
-        checkCollision();
+        if(!dead) {
+            checkCollision();
+        }
     }
     public void keyPressed() {
-        if (keyCode == LEFT) {
-            // move on block left
-            moving_shape.move_left();
-        }else if (keyCode == RIGHT) {
-            // move on block right
-            moving_shape.move_right();
-        }else if(keyCode == UP){
-            // rotate clockwise for all shape types
+        if(!dead) {
+            if (keyCode == LEFT) {
+                // move on block left
+                moving_shape.move_left();
+            } else if (keyCode == RIGHT) {
+                // move on block right
+                moving_shape.move_right();
+            } else if (keyCode == UP) {
+                // rotate clockwise for all shape types
 
-            if(moving_shape.type==0) {
-                Blue_line line = (Blue_line) moving_shape;
-                line.rotate_All();
-            }else if(moving_shape.type==1){
-                DarkBlue_L L = (DarkBlue_L) moving_shape;
-                L.rotate_All();
-            }else if(moving_shape.type==2){
-                Green_S S = (Green_S) moving_shape;
-                S.rotate_All();
-            }else if(moving_shape.type==3) {
-                Orange_L L = (Orange_L) moving_shape;
-                L.rotate_All();
-            }else if(moving_shape.type==4){
-                Purple_T T = (Purple_T) moving_shape;
-                T.rotate_All();
-            }else if(moving_shape.type==5){
-                Red_Z Z = (Red_Z) moving_shape;
-                Z.rotate_All();
+                if (moving_shape.type == 0) {
+                    Blue_line line = (Blue_line) moving_shape;
+                    line.rotate_All();
+                } else if (moving_shape.type == 1) {
+                    DarkBlue_L L = (DarkBlue_L) moving_shape;
+                    L.rotate_All();
+                } else if (moving_shape.type == 2) {
+                    Green_S S = (Green_S) moving_shape;
+                    S.rotate_All();
+                } else if (moving_shape.type == 3) {
+                    Orange_L L = (Orange_L) moving_shape;
+                    L.rotate_All();
+                } else if (moving_shape.type == 4) {
+                    Purple_T T = (Purple_T) moving_shape;
+                    T.rotate_All();
+                } else if (moving_shape.type == 5) {
+                    Red_Z Z = (Red_Z) moving_shape;
+                    Z.rotate_All();
+                }
+
+
+            } else if (keyCode == DOWN) {
+                // move on block down
+                moving_shape.move_down();
+                checkCollision();
             }
-
-        }else if(keyCode == DOWN) {
-            // move on block down
-            moving_shape.move_down();
-            checkCollision();
         }
     }
 
@@ -209,7 +218,9 @@ public class MAIN extends PApplet {
     class Move extends TimerTask {
         // move down every second => gets faster
         public void run() {
-            moving_shape.move_down();
+            if(!dead) {
+                moving_shape.move_down();
+            }
         }
 
     }
@@ -268,6 +279,11 @@ public class MAIN extends PApplet {
             else{
                 for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
                     for(Block b: Shape.all_Shapes.get(index).allblocks){
+                        if(b.y==0){
+                           dead = true;
+                           System.out.println("you have died :((");
+                        }
+
                         if(b.x==block.x && b.y==block.y){
 
                             // adds an extra second for last second moves

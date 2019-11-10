@@ -9,9 +9,10 @@ public class Spot {
     private boolean occupied;
 
 
-    public static int score = 0;
+    public static double score = 0;
+    public static double level = 1.0;
     public static int startTime = 1000; // start Time one second can get as low as 0,3 seconds
-    private final static int getFaster = 10; // rate of speeding up
+    private final static int getFaster = 100; // rate of speeding up
 
     private int x;
     private int y;
@@ -81,8 +82,11 @@ public class Spot {
         resetGrid();
 
         int num;
+        int rowsFound = 0;
+
         for (int y = 0; y < Shape.num_Y; y++) {
             num = 0;
+
             for (int x = 0; x < Shape.num_X; x++) {
                 if (Grid[y][x].occupied) {
                     num++;
@@ -90,6 +94,7 @@ public class Spot {
 
             }
             if (num == Shape.num_X) {
+                rowsFound++;
                 for (int x = 0; x < Shape.max_X; x += Shape.SIZE) {
                     for (Iterator<Shape> shape_iterator = Shape.all_Shapes.iterator(); shape_iterator.hasNext(); ) {
                         Shape blocks = shape_iterator.next();
@@ -108,9 +113,21 @@ public class Spot {
                         }
                     }
                 }
+                level+=0.1;
                 // make default time faster
-                Spot.score += Shape.num_X;
-                Spot.startTime -= Spot.getFaster;
+                if(rowsFound==1) {
+                    Spot.score += 40;
+                }else if(rowsFound==2){
+                    Spot.score += 60;
+                }else if(rowsFound==3){
+                    Spot.score += 200;
+                }else if(rowsFound==4){
+                    Spot.score += 900;
+                }
+
+                if(level==2.0||level==3.0||level==4.0||level==5.0||level==6.0||level==7.0||level==8.0||level==9.0) {
+                    Spot.startTime -= Spot.getFaster;
+                }
 
                 // move all blocks down
                 for (int index = 0; index < Shape.all_Shapes.size(); index++) {
