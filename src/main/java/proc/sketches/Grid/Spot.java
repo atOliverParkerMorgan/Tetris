@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Objects;
 
 public class Spot {
-    private boolean occupied;
+    public boolean occupied;
 
 
     public static double score = 0;

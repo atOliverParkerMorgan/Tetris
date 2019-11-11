@@ -1,9 +1,8 @@
 package proc.sketches.Shapes;
 
 import proc.sketches.Blocks.Block;
-import proc.sketches.Grid.Spot;
 
-import java.io.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,6 +105,7 @@ public class Shape implements Serializable {
     }
 
     private boolean bound_check(int[][] all, int addToBoundRight){
+        // checks if shape is in bound after rotation if not it fixes the shape
 
         int index = 0;
         for(Block b: this.allblocks) {
@@ -138,43 +138,42 @@ public class Shape implements Serializable {
         }
         return false;
     }
-    void rotate(int[][] all, int addToBoundRight){
+    boolean rotate(int[][] all, int addToBoundRight){
+        // rotates the shape if other shapes interferer in the rotation it fixes the rotation according to
+        // the other shapes
+        if (bound_check(all, addToBoundRight)) {
+            return true;
+        }
 
-
-
-        boolean noMove = false;
-
-        main_loop:
         for(Block b: this.allblocks) {
             for (int[] axis : all) {
-
                 if (overlap(axis[0]+b.x, axis[1]+b.y)) {
-                    noMove = true;
+                    if(!(overlap(axis[0] + b.x + Shape.SIZE, axis[1] + b.y) && b.x + SIZE <= max_X)){
+                       break;
+                    }else if(!overlap(axis[0]+b.x-addToBoundRight, axis[1]+b.y) && b.x - addToBoundRight >= 0){
+                        break;
+                    }else{
+                        return false;
+                    }
 
-                    break main_loop;
                 }
-
-
             }
         }
-        if (bound_check(all, addToBoundRight)) {
-            noMove = true;
+
+        byte index = 0;
+        for (Block b : this.allblocks) {
+            int[] axis = all[index];
+            //bound check
+
+            b.x += axis[0];
+            b.y += axis[1];
+
+            index++;
+
+
         }
+        return true;
 
-        if(!noMove) {
-            byte index = 0;
-            for (Block b : this.allblocks) {
-                int[] axis = all[index];
-                //bound check
-
-                b.x += axis[0];
-                b.y += axis[1];
-
-                index++;
-
-
-            }
-        }
 
     }
 

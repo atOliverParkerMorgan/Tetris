@@ -37,12 +37,14 @@ public class Blue_line extends Shape implements Serializable {
     public void rotate_All(){
         if(this.flat){
             int[][] all = new int[][]{rotate2[0],rotate2[1],rotate2[2],rotate2[3]};
-            this.rotate(all, 2*SIZE);
-            this.flat = false;
+            if(this.rotate(all, 2*SIZE)) {
+                this.flat = false;
+            }
         }else{
             int[][] all = new int[][]{rotate1[0],rotate1[1],rotate1[2],rotate1[3]};
-            this.rotate(all, 2*SIZE);
-            this.flat = true;
+            if(this.rotate(all, 2*SIZE)) {
+                this.flat = true;
+            }
         }
     }
 
