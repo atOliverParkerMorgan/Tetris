@@ -6,10 +6,6 @@ import proc.sketches.Shapes.Shape;
 
 public class AI {
     private Spot[][] Grid;
-
-    private int numberOfHoles;
-    private int lineClearing;
-    private int bumps;
     private int[][] bitMap;
 
 
@@ -17,20 +13,14 @@ public class AI {
 
         this.bitMap = getGridInBits(movingSpot);
         this.Grid = Grid;
-        //this.numberOfHoles = getNumberOfHoles();
-        this.lineClearing = 0;
-        this.bumps = 0;
+
     }
     public AI(){
         this.Grid = null;
-        this.numberOfHoles = 0;
-        this.lineClearing = 0;
-        this.bumps = 0;
     }
 
     private int[][] getGridInBits(Shape movingSpot){
         int[][] bitMap = new int[Shape.getNum_Y()][Shape.getNum_X()];
-
         for(int y = 0; y<Shape.getNum_Y(); y++){
             for(int x = 0; x<Shape.getNum_X(); x++){
                 if(Grid[y][x].isOccupied()){
@@ -62,17 +52,17 @@ public class AI {
             if(bitMap[y][x-1]==0){
                 return true;
             }
-        }if(y!=Shape.getNum_Y()-1){
-            return bitMap[y + 1][x] == 0;
+        }if(y!=0){
+            return bitMap[y - 1][x] == 0;
         }
         return false;
 
     }
 
 
-    public int[][] getNumberOfHoles(Shape movingBlock){
+    public int getNumberOfHoles(Shape movingBlock){
 
-        int[][] bitMap = getGridInBits(movingBlock);
+        bitMap = getGridInBits(movingBlock);
         int foundHoles = 0;
 
         for(int y = 0; y<Shape.getNum_Y(); y++){
@@ -88,12 +78,43 @@ public class AI {
         }
 
 
-        return  bitMap;
-
-
-
-
+        return foundHoles;
     }
+    public int getLineDifference(Shape moveShape){
+        int[][] bitmap = getGridInBits(moveShape);
+
+        int[] values = new int[Shape.getNum_X()];
+
+        int index = 0;
+        for(int x = 0; x<Shape.getNum_X();x++){
+            int highest = 0;
+            for(int y = 0; y<Shape.getNum_Y();y++){
+                if(bitmap[y][x] == 0){
+                    if(highest<y+1) {
+                        highest = 20-y;
+                    }
+                }
+            }
+            values[index] = highest;
+            index++;
+        }
+        int all = 0;
+        for(int v = 0; v<Shape.getNum_X(); v++){
+            System.out.println(values[v]);
+            if(v+1<values.length) {
+                int difference = values[v] - values[v + 1];
+                if(difference < 0){
+                    all+= -difference;
+                }else {
+                    all+= difference;
+                }
+            }
+        }
+
+
+        return all;
+    }
+
 
     public void setGrid(Spot[][] grid) {
         Grid = grid;
@@ -103,17 +124,7 @@ public class AI {
         return Grid;
     }
 
-    public int getNumberOfHoles() {
-        return numberOfHoles;
-    }
 
-    public int getLineClearing() {
-        return lineClearing;
-    }
-
-    public int getBumps() {
-        return bumps;
-    }
 
     public int[][] getBitMap() {
         return bitMap;
