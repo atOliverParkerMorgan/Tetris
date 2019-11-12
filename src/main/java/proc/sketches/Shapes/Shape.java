@@ -6,18 +6,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shape implements Serializable {
-    public ArrayList<Block> allblocks;
-    public static final int SIZE = 30;
-    public static final int max_X = 300;
-    public static final int max_Y = 600;
+public class Shape{
+    protected ArrayList<Block> allblocks;
+    protected static final int SIZE = 30;
+    protected static final int max_X = 300;
+    protected static final int max_Y = 600;
+    protected static final int num_X = max_X/SIZE;
+    protected static final int num_Y = max_Y/SIZE;
 
-    public static final int num_X = max_X/SIZE;
-    public static final int num_Y = max_Y/SIZE;
+    protected static List<Shape> all_Shapes = new ArrayList<>();
 
-    public static List<Shape> all_Shapes = new ArrayList<>();
-
-    public int type;
+    protected int type;
 
     public Shape(int type){
         this.allblocks = new ArrayList<>();
@@ -177,6 +176,37 @@ public class Shape implements Serializable {
 
     }
 
+    public ArrayList<Block> getAllblocks() {
+        return allblocks;
+    }
+
+    public static int getSIZE() {
+        return SIZE;
+    }
+
+    public static int getMax_X() {
+        return max_X;
+    }
+
+    public static int getMax_Y() {
+        return max_Y;
+    }
+
+    public static int getNum_X() {
+        return num_X;
+    }
+
+    public static int getNum_Y() {
+        return num_Y;
+    }
+
+    public static List<Shape> getAll_Shapes() {
+        return all_Shapes;
+    }
+
+    public int getType() {
+        return type;
+    }
 }
 
 

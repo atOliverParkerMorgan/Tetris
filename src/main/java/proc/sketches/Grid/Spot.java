@@ -6,27 +6,27 @@ import java.util.Iterator;
 import java.util.Objects;
 
 public class Spot {
-    public boolean occupied;
+    private boolean occupied;
 
 
-    public static double score = 0;
-    public static double level = 1.0;
-    public static int startTime = 1000; // start Time one second can get as low as 0,3 seconds
+    private static double score = 0;
+    private static double level = 1.0;
+    private static int startTime = 1000; // start Time one second can get as low as 0,3 seconds
     private final static int getFaster = 100; // rate of speeding up
 
     private int x;
     private int y;
 
-    private static Spot[][] Grid = new Spot[Shape.num_Y][Shape.num_X];
+    private static Spot[][] Grid = new Spot[Shape.getNum_Y()][Shape.getNum_X()];
 
     // init gird with new Spots
     static {
         int index_x;
         int index_y = 0;
-        for (int y = 0; y < Shape.max_Y; y += Shape.SIZE) {
+        for (int y = 0; y < Shape.getMax_Y(); y += Shape.getSIZE()) {
             index_x = 0;
 
-            for (int x = 0; x < Shape.max_X; x += Shape.SIZE) {
+            for (int x = 0; x < Shape.getMax_X(); x += Shape.getSIZE()) {
                 Grid[index_y][index_x] = new Spot(x, y);
                 index_x++;
             }
@@ -59,13 +59,13 @@ public class Spot {
     public static void resetGrid() {
         // change all Spots to unoccupied the update all spots depending on the placement of all of the blocks
 
-        for (int y = 0; y < Shape.num_Y; y++) {
-            for (int x = 0; x < Shape.num_X; x++) {
+        for (int y = 0; y < Shape.getNum_Y(); y++) {
+            for (int x = 0; x < Shape.getNum_X(); x++) {
                 Grid[y][x].occupied = false;
             }
         }
-        for (Shape shape : Shape.all_Shapes) {
-            for (Block block : shape.allblocks) {
+        for (Shape shape : Shape.getAll_Shapes()) {
+            for (Block block : shape.getAllblocks()) {
                 int x = (int) block.x;
                 int y = (int) block.y;
 
@@ -84,30 +84,30 @@ public class Spot {
         int num;
         int rowsFound = 0;
 
-        for (int y = 0; y < Shape.num_Y; y++) {
+        for (int y = 0; y < Shape.getNum_Y(); y++) {
             num = 0;
 
-            for (int x = 0; x < Shape.num_X; x++) {
+            for (int x = 0; x < Shape.getNum_X(); x++) {
                 if (Grid[y][x].occupied) {
                     num++;
                 }
 
             }
-            if (num == Shape.num_X) {
+            if (num == Shape.getNum_X()) {
                 rowsFound++;
-                for (int x = 0; x < Shape.max_X; x += Shape.SIZE) {
-                    for (Iterator<Shape> shape_iterator = Shape.all_Shapes.iterator(); shape_iterator.hasNext(); ) {
+                for (int x = 0; x < Shape.getMax_X(); x += Shape.getSIZE()) {
+                    for (Iterator<Shape> shape_iterator = Shape.getAll_Shapes().iterator(); shape_iterator.hasNext(); ) {
                         Shape blocks = shape_iterator.next();
-                        for (Iterator<Block> block_iterable = blocks.allblocks.iterator(); block_iterable.hasNext(); ) {
+                        for (Iterator<Block> block_iterable = blocks.getAllblocks().iterator(); block_iterable.hasNext(); ) {
                             Block block = block_iterable.next();
-                            if (block.x == x && block.y == y * Shape.SIZE) {
+                            if (block.x == x && block.y == y * Shape.getSIZE()) {
 
 
 
                                 block_iterable.remove();
                             }
                         }
-                        if (blocks.allblocks.size() == 0) {
+                        if (blocks.getAllblocks().size() == 0) {
 
                             shape_iterator.remove();
                         }
@@ -130,10 +130,10 @@ public class Spot {
                 }
 
                 // move all blocks down
-                for (int index = 0; index < Shape.all_Shapes.size(); index++) {
-                    for (Block block : Shape.all_Shapes.get(index).allblocks) {
-                        if(block.y<y*Shape.SIZE) {
-                            block.y += Shape.SIZE;
+                for (int index = 0; index < Shape.getAll_Shapes().size(); index++) {
+                    for (Block block : Shape.getAll_Shapes().get(index).getAllblocks()) {
+                        if(block.y<y*Shape.getSIZE()) {
+                            block.y += Shape.getSIZE();
                         }
 
                     }
@@ -143,6 +143,38 @@ public class Spot {
             }
         }
 
+    }
+
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    public static double getScore() {
+        return score;
+    }
+
+    public static double getLevel() {
+        return level;
+    }
+
+    public static int getStartTime() {
+        return startTime;
+    }
+
+    public static int getGetFaster() {
+        return getFaster;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public static Spot[][] getGrid() {
+        return Grid;
     }
 }
 

@@ -1,5 +1,6 @@
 package proc.sketches;
 
+import proc.sketches.AI.AI;
 import proc.sketches.Blocks.Block;
 import proc.sketches.Grid.Spot;
 import proc.sketches.Shapes.*;
@@ -8,6 +9,7 @@ import processing.core.PImage;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 
 public class MAIN extends PApplet {
@@ -24,6 +26,8 @@ public class MAIN extends PApplet {
     private PImage Orange_block;
     private PImage Red_block;
 
+    private AI ai;
+
     private PImage LOGO;
 
 
@@ -34,7 +38,7 @@ public class MAIN extends PApplet {
 
 
     public void settings(){
-
+         ai = new AI();
         dead = false;
         next_Shapes = new Shape[3];
         for(int i=0;i<3;i++){
@@ -45,7 +49,7 @@ public class MAIN extends PApplet {
 
         // school dir
         //C:\Users\2019-e-morgan\IdeaProjects\Tetris\src\main\java\proc\sketches\sprites\
-        String base_dir = "C:\\Users\\olive\\IdeaProjects\\tetris\\src\\main\\java\\proc\\sketches\\sprites\\";
+        String base_dir = "C:\\Users\\2019-e-morgan\\IdeaProjects\\Tetris\\src\\main\\java\\proc\\sketches\\sprites\\";
 
         //all blocks
         darkBlue_block = loadImage(base_dir+"darkBlue.png");
@@ -61,12 +65,12 @@ public class MAIN extends PApplet {
 
         // Canvas
         int UI_size = 250;
-        size(Shape.max_X+UI_size, Shape.max_Y, JAVA2D);
+        size(Shape.getMax_X()+UI_size, Shape.getMax_Y(), JAVA2D);
         moving_shape = pickRandomShape();
-        Shape.all_Shapes.add(moving_shape);
+        Shape.getAll_Shapes().add(moving_shape);
         // And From your main() method or any other method
         Timer timer = new Timer();
-        timer.schedule(new Move(), 0, Spot.startTime);
+        timer.schedule(new Move(), 0, Spot.getStartTime());
 
     }public void draw(){
 
@@ -77,34 +81,34 @@ public class MAIN extends PApplet {
         background(255,255,255);
 
         // UI => Score
-        image(LOGO,Shape.max_X+15,15);
-        text("Level: "+(int) Spot.level,Shape.max_X+15,110);
-        text("Score: "+(int) Spot.score,Shape.max_X+15,140);
-        text("Next: ",Shape.max_X+15,170);
+        image(LOGO,Shape.getMax_X()+15,15);
+        text("Level: "+(int) Spot.getLevel(),Shape.getMax_X()+15,110);
+        text("Score: "+(int) Spot.getScore(),Shape.getMax_X()+15,140);
+        text("Next: ",Shape.getMax_X()+15,170);
         textSize(20);
         int add_x = 300;
         int add_y = 200;
 
         //draw "NEXT" UI
         for(Shape shape: next_Shapes){
-            for(Block block: shape.allblocks){
+            for(Block block: shape.getAllblocks()){
                 int x = (int) block.x + add_x;
                 int y = (int) block.y + add_y;
 
-                if(shape.type==0) {
-                    image(lightBlue_block, x-Shape.SIZE, y);
-                }else if(shape.type==1){
+                if(shape.getType()==0) {
+                    image(lightBlue_block, x-Shape.getSIZE(), y);
+                }else if(shape.getType()==1){
                     image(darkBlue_block, x, y);
-                }else if(shape.type==2){
-                    image(Green_block, x-Shape.SIZE, y);
-                }else if(shape.type==3){
+                }else if(shape.getType()==2){
+                    image(Green_block, x-Shape.getSIZE(), y);
+                }else if(shape.getType()==3){
                     image(Orange_block, x, y);
-                }else if(shape.type==4){
+                }else if(shape.getType()==4){
                     image(Purple_block, x, y);
-                }else if(shape.type==5){
-                    image(Red_block,x-Shape.SIZE,y);
-                }else if(shape.type==6){
-                    image(Yellow_block, x-Shape.SIZE, y);
+                }else if(shape.getType()==5){
+                    image(Red_block,x-Shape.getSIZE(),y);
+                }else if(shape.getType()==6){
+                    image(Yellow_block, x-Shape.getSIZE(), y);
                 }
             }
             add_y+=130;
@@ -115,52 +119,52 @@ public class MAIN extends PApplet {
         float cord_line1_x = 0;
         float cord_line1_y = 0;
         float cord_line2_x = 0;
-        float cord_line2_y = Shape.max_Y;
+        float cord_line2_y = Shape.getMax_Y();
 
-        for(int i=0;i<(Shape.max_X/Shape.SIZE)+1;i++){
+        for(int i=0;i<(Shape.getMax_X()/Shape.getSIZE())+1;i++){
 
 
             line(cord_line1_x,cord_line1_y,cord_line2_x,cord_line2_y);
             fill(0,0,0);
-            cord_line1_x += Shape.SIZE;
-            cord_line2_x += Shape.SIZE;
+            cord_line1_x += Shape.getSIZE();
+            cord_line2_x += Shape.getSIZE();
 
         }
 
         //draw all lines y
         cord_line1_x = 0;
         cord_line1_y = 0;
-        cord_line2_x = Shape.max_X;
+        cord_line2_x = Shape.getMax_X();
         cord_line2_y = 0;
 
-        for(int i=0;i<Shape.max_Y/Shape.SIZE;i++){
+        for(int i=0;i<Shape.getMax_Y()/Shape.getSIZE();i++){
 
 
             line(cord_line1_x,cord_line1_y,cord_line2_x,cord_line2_y);
             fill(0,0,0);
-            cord_line1_y += Shape.SIZE;
-            cord_line2_y += Shape.SIZE;
+            cord_line1_y += Shape.getSIZE();
+            cord_line2_y += Shape.getSIZE();
         }
 
         //draw all blocks
-        for(Shape shape: Shape.all_Shapes) {
-            for (Block block : shape.allblocks) {
+        for(Shape shape: Shape.getAll_Shapes()) {
+            for (Block block : shape.getAllblocks()) {
                 int x = (int) block.x;
                 int y = (int) block.y;
 
-                if(shape.type==0) {
+                if(shape.getType()==0) {
                     image(lightBlue_block, x, y);
-                }else if(shape.type==1){
+                }else if(shape.getType()==1){
                     image(darkBlue_block, x, y);
-                }else if(shape.type==2){
+                }else if(shape.getType()==2){
                     image(Green_block, x, y);
-                }else if(shape.type==3){
+                }else if(shape.getType()==3){
                     image(Orange_block, x, y);
-                }else if(shape.type==4){
+                }else if(shape.getType()==4){
                     image(Purple_block, x, y);
-                }else if(shape.type==5){
+                }else if(shape.getType()==5){
                     image(Red_block,x,y);
-                }else if(shape.type==6){
+                }else if(shape.getType()==6){
                     image(Yellow_block, x, y);
                 }
 
@@ -178,6 +182,17 @@ public class MAIN extends PApplet {
         if(!dead) {
             if (keyCode == LEFT) {
                 // move on block left
+                ai.setGrid(Spot.getGrid());
+                int[][] bitMap = ai.getNumberOfHoles(moving_shape);
+
+                for(int y = 0; y<Shape.getNum_Y(); y++){
+                    StringBuilder print = new StringBuilder();
+                    for(int x = 0; x<Shape.getNum_X(); x++){
+                        print.append(bitMap[y][x]);
+                    }
+                    System.out.println(print);
+
+                }
                 moving_shape.move_left();
             } else if (keyCode == RIGHT) {
                 // move on block right
@@ -185,22 +200,22 @@ public class MAIN extends PApplet {
             } else if (keyCode == UP) {
                 // rotate clockwise for all shape types
 
-                if (moving_shape.type == 0) {
+                if (moving_shape.getType() == 0) {
                     Blue_line line = (Blue_line) moving_shape;
                     line.rotate_All();
-                } else if (moving_shape.type == 1) {
+                } else if (moving_shape.getType() == 1) {
                     DarkBlue_L L = (DarkBlue_L) moving_shape;
                     L.rotate_All();
-                } else if (moving_shape.type == 2) {
+                } else if (moving_shape.getType() == 2) {
                     Green_S S = (Green_S) moving_shape;
                     S.rotate_All();
-                } else if (moving_shape.type == 3) {
+                } else if (moving_shape.getType() == 3) {
                     Orange_L L = (Orange_L) moving_shape;
                     L.rotate_All();
-                } else if (moving_shape.type == 4) {
+                } else if (moving_shape.getType() == 4) {
                     Purple_T T = (Purple_T) moving_shape;
                     T.rotate_All();
-                } else if (moving_shape.type == 5) {
+                } else if (moving_shape.getType() == 5) {
                     Red_Z Z = (Red_Z) moving_shape;
                     Z.rotate_All();
                 }
@@ -259,9 +274,9 @@ public class MAIN extends PApplet {
 
         //collision logic
         main_loop:
-        for(Block block: moving_shape.allblocks){
+        for(Block block: moving_shape.getAllblocks()){
             // at the bottom of the screen
-            if(block.y==Shape.max_Y){
+            if(block.y==Shape.getMax_Y()){
                 //_.._
 
                 // adds an extra second for last second moves
@@ -272,13 +287,13 @@ public class MAIN extends PApplet {
                 moving_shape = next_Shapes[0];
                 Shift();
 
-                Shape.all_Shapes.add(moving_shape);
+                Shape.getAll_Shapes().add(moving_shape);
                 break;
             }
             //checking for all collisions with all blocks
             else{
-                for(int index = 0; index<Shape.all_Shapes.size()-1;index++){
-                    for(Block b: Shape.all_Shapes.get(index).allblocks){
+                for(int index = 0; index<Shape.getAll_Shapes().size()-1;index++){
+                    for(Block b: Shape.getAll_Shapes().get(index).getAllblocks()){
                         if(b.y==0){
                            dead = true;
                            System.out.println("you have died :((");
@@ -295,7 +310,7 @@ public class MAIN extends PApplet {
                             // new shape
                             moving_shape = next_Shapes[0];
                             Shift();
-                            Shape.all_Shapes.add(moving_shape);
+                            Shape.getAll_Shapes().add(moving_shape);
 
                             // break the main loop
                             break main_loop;
