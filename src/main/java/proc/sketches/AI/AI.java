@@ -80,7 +80,7 @@ public class AI {
 
         return foundHoles;
     }
-    public int getLineDifference(Shape moveShape){
+    public int getBumps(Shape moveShape){
         int[][] bitmap = getGridInBits(moveShape);
 
         int[] values = new int[Shape.getNum_X()];
@@ -114,6 +114,53 @@ public class AI {
 
         return all;
     }
+    public int aggregateHeights(Shape moveShape){
+        int[][] bitmap = getGridInBits(moveShape);
+
+        int[] values = new int[Shape.getNum_X()];
+
+        int index = 0;
+        for(int x = 0; x<Shape.getNum_X();x++){
+            int highest = 0;
+            for(int y = 0; y<Shape.getNum_Y();y++){
+                if(bitmap[y][x] == 0){
+                    if(highest<20-y) {
+                        highest = 20-y;
+                    }
+                }
+            }
+            values[index] = highest;
+            index++;
+        }
+        int all = 0;
+        for (int v : values){
+            all+=v;
+        }
+
+        return all;
+
+
+    }
+
+    public int getNumberOfLines(Shape moveShape){
+        int[][] bitmap = getGridInBits(moveShape);
+        int numberOfLines = 0;
+
+        for(int y = 0; y<Shape.getNum_Y();y++) {
+            int blocksInLine = 0;
+            for (int x = 0; x < Shape.getNum_X(); x++) {
+                if (bitmap[y][x]==0){
+                    blocksInLine++;
+                }
+            }
+            if(blocksInLine==Shape.getNum_X()){
+                numberOfLines++;
+            }
+        }
+
+        return numberOfLines;
+    }
+
 
 
     public void setGrid(Spot[][] grid) {

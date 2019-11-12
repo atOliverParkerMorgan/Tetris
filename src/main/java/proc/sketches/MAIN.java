@@ -183,7 +183,7 @@ public class MAIN extends PApplet {
             if (keyCode == LEFT) {
                 // move on block left
                 ai.setGrid(Spot.getGrid());
-                System.out.println(ai.getLineDifference(moving_shape));
+                //System.out.println(ai.aggregateHeights(moving_shape));
                 moving_shape.move_left();
             } else if (keyCode == RIGHT) {
                 // move on block right
