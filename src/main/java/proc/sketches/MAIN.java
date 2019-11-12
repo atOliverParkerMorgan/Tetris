@@ -49,7 +49,7 @@ public class MAIN extends PApplet {
 
         // school dir
         //C:\Users\2019-e-morgan\IdeaProjects\Tetris\src\main\java\proc\sketches\sprites\
-        String base_dir = "C:\\Users\\2019-e-morgan\\IdeaProjects\\Tetris\\src\\main\\java\\proc\\sketches\\sprites\\";
+        String base_dir = "C:\\Users\\olive\\IdeaProjects\\tetris\\src\\main\\java\\proc\\sketches\\sprites\\";
 
         //all blocks
         darkBlue_block = loadImage(base_dir+"darkBlue.png");
@@ -182,17 +182,7 @@ public class MAIN extends PApplet {
         if(!dead) {
             if (keyCode == LEFT) {
                 // move on block left
-                ai.setGrid(Spot.getGrid());
-                int[][] bitMap = ai.getNumberOfHoles(moving_shape);
 
-                for(int y = 0; y<Shape.getNum_Y(); y++){
-                    StringBuilder print = new StringBuilder();
-                    for(int x = 0; x<Shape.getNum_X(); x++){
-                        print.append(bitMap[y][x]);
-                    }
-                    System.out.println(print);
-
-                }
                 moving_shape.move_left();
             } else if (keyCode == RIGHT) {
                 // move on block right

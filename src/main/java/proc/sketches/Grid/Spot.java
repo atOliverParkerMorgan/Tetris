@@ -14,8 +14,8 @@ public class Spot {
     private static int startTime = 1000; // start Time one second can get as low as 0,3 seconds
     private final static int getFaster = 100; // rate of speeding up
 
-    private int x;
-    private int y;
+    public int x;
+    public int y;
 
     private static Spot[][] Grid = new Spot[Shape.getNum_Y()][Shape.getNum_X()];
 
@@ -40,7 +40,7 @@ public class Spot {
         this.y = y;
     }
 
-    private static Spot getSpot(int x, int y) {
+    public static Spot getSpot(int x, int y) {
         // look throw the grid => if Spot is found then return else return null
 
         for (Spot[] spots : Grid) {

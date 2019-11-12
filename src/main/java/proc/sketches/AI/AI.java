@@ -29,10 +29,10 @@ public class AI {
     }
 
     private int[][] getGridInBits(Shape movingSpot){
-        int[][] bitMap = new int[Shape.num_Y][Shape.num_X];
+        int[][] bitMap = new int[Shape.getNum_Y()][Shape.getNum_X()];
 
-        for(int y = 0; y<Shape.num_Y; y++){
-            for(int x = 0; x<Shape.num_X; x++){
+        for(int y = 0; y<Shape.getNum_Y(); y++){
+            for(int x = 0; x<Shape.getNum_X(); x++){
                 if(Grid[y][x].isOccupied()){
                     bitMap[y][x] = 0;
                 }else{
@@ -41,9 +41,9 @@ public class AI {
             }
         }
 
-        for(Block block: movingSpot.allblocks){
-            if((int) block.y / Shape.SIZE>0 && (int) block.y / Shape.SIZE<Shape.num_Y) {
-                bitMap[(int) block.y / Shape.SIZE][(int) block.x / Shape.SIZE] = 1;
+        for(Block block: movingSpot.getAllblocks()){
+            if((int) block.y / Shape.getSIZE()>0 && (int) block.y / Shape.getSIZE()<Shape.getNum_Y()) {
+                bitMap[(int) block.y / Shape.getSIZE()][(int) block.x / Shape.getSIZE()] = 1;
             }
 
         }
@@ -54,7 +54,7 @@ public class AI {
 
     }
     private boolean isHole(int x, int y, int[][] bitMap){
-        if(x!=Shape.num_X-1){
+        if(x!=Shape.getNum_X()-1){
             if(bitMap[y][x+1]==0){
                 return true;
             }
@@ -62,7 +62,7 @@ public class AI {
             if(bitMap[y][x-1]==0){
                 return true;
             }
-        }if(y!=Shape.num_Y-1){
+        }if(y!=Shape.getNum_Y()-1){
             return bitMap[y + 1][x] == 0;
         }
         return false;
@@ -75,8 +75,8 @@ public class AI {
         int[][] bitMap = getGridInBits(movingBlock);
         int foundHoles = 0;
 
-        for(int y = 0; y<Shape.num_Y; y++){
-            for(int x = 0; x<Shape.num_X; x++){
+        for(int y = 0; y<Shape.getNum_Y(); y++){
+            for(int x = 0; x<Shape.getNum_X(); x++){
                 if(bitMap[y][x]==1) {
                    if(isHole(x,y,bitMap)){
                        foundHoles++;

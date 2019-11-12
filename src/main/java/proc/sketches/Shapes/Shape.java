@@ -2,21 +2,20 @@ package proc.sketches.Shapes;
 
 import proc.sketches.Blocks.Block;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Shape{
-    protected ArrayList<Block> allblocks;
-    protected static final int SIZE = 30;
-    protected static final int max_X = 300;
-    protected static final int max_Y = 600;
-    protected static final int num_X = max_X/SIZE;
-    protected static final int num_Y = max_Y/SIZE;
+    ArrayList<Block> allblocks;
+    static final int SIZE = 30;
+    static final int max_X = 300;
+    private static final int max_Y = 600;
+    private static final int num_X = max_X/SIZE;
+    private static final int num_Y = max_Y/SIZE;
 
-    protected static List<Shape> all_Shapes = new ArrayList<>();
+    private static List<Shape> all_Shapes = new ArrayList<>();
 
-    protected int type;
+    private int type;
 
     public Shape(int type){
         this.allblocks = new ArrayList<>();
