@@ -90,7 +90,7 @@ public class AI {
             int highest = 0;
             for(int y = 0; y<Shape.getNum_Y();y++){
                 if(bitmap[y][x] == 0){
-                    if(highest<y+1) {
+                    if(highest<20-y) {
                         highest = 20-y;
                     }
                 }
