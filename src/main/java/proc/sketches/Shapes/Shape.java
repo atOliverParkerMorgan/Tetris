@@ -5,7 +5,7 @@ import proc.sketches.Blocks.Block;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shape implements Cloneable{
+public class Shape{
 
     ArrayList<Block> allblocks;
     static final int SIZE = 30;
@@ -24,6 +24,11 @@ public class Shape implements Cloneable{
         this.allblocks = new ArrayList<>();
         this.type = type;
         this.states = states;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     private boolean overlap(double x, double y){

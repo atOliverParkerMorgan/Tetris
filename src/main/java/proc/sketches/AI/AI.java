@@ -167,13 +167,12 @@ public class AI {
         return numberOfLines;
     }
 
-    public int[] bestMove(Shape moveShape) {
+    public int[] bestMove(Shape moveShape) throws CloneNotSupportedException {
         double weight_a = -0.510066;
         double weight_b = 0.76066;
         double weight_c = -0.35663;
         double weight_d = -0.18443;
-
-
+        moveShape.clone();
         // move left
         boolean moveLeft = true;
         while (moveLeft) {
