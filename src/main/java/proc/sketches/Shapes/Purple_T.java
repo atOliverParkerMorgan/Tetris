@@ -15,7 +15,7 @@ public class Purple_T extends Shape{
     private final int[][] rotate4 = new int[][]{{-SIZE,SIZE},{-SIZE,-SIZE},{0,0},{SIZE,SIZE}};
 
     public Purple_T() {
-        super(4);
+        super(4, (byte) 4);
 
         this.flat = 1;
         int number_of_blocks = 4;

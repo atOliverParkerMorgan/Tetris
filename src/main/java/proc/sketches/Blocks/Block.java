@@ -1,8 +1,6 @@
 package proc.sketches.Blocks;
 
-import java.io.Serializable;
-
-public class Block implements Serializable {
+public class Block {
     public double x;
     public double y;
 

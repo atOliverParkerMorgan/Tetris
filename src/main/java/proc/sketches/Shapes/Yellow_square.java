@@ -4,7 +4,7 @@ import proc.sketches.Blocks.Block;
 
 public class Yellow_square extends Shape{
     public Yellow_square() {
-        super(6);
+        super(6, (byte) 1);
 
         int number_of_blocks = 4;
 

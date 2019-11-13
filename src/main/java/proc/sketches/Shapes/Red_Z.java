@@ -11,7 +11,7 @@ public class Red_Z extends Shape{
     private final int[][] rotate2 = new int[][]{{0,-2*SIZE},{SIZE,-SIZE},{0,0},{SIZE,SIZE}};
 
     public Red_Z() {
-        super(5);
+        super(5, (byte) 2);
 
         this.flat = false;
         int number_of_blocks = 4;

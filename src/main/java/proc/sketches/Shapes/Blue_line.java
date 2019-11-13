@@ -13,7 +13,7 @@ public class Blue_line extends Shape implements Serializable {
     private final int[][] rotate2 = new int[][]{{SIZE,-SIZE},{0,0},{-SIZE,SIZE},{-SIZE*2,2*SIZE}};
 
     public Blue_line(){
-        super(0);
+        super(0, (byte) 2);
 
         this.flat = true;
         int number_of_blocks = 4;

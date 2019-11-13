@@ -2,6 +2,7 @@ package proc.sketches.Grid;
 
 import proc.sketches.Blocks.Block;
 import proc.sketches.Shapes.Shape;
+
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -40,7 +41,7 @@ public class Spot {
         this.y = y;
     }
 
-    public static Spot getSpot(int x, int y) {
+    private static Spot getSpot(int x, int y) {
         // look throw the grid => if Spot is found then return else return null
 
         for (Spot[] spots : Grid) {
@@ -175,6 +176,11 @@ public class Spot {
 
     public static Spot[][] getGrid() {
         return Grid;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
 

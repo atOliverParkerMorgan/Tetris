@@ -17,7 +17,7 @@ public class DarkBlue_L extends Shape{
     private final int[][] rotate4 = new int[][]{{-2*SIZE,0},{-SIZE,-SIZE},{0,0},{SIZE,SIZE}};
 
     public DarkBlue_L() {
-        super(1);
+        super(1,(byte) 4);
 
         this.flat = 1;
         int number_of_blocks = 4;

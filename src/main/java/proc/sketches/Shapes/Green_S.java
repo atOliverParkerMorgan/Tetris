@@ -12,7 +12,7 @@ public class Green_S extends Shape{
     private final int[][] rotate2 = new int[][]{{-2*SIZE,0},{-SIZE,SIZE},{0,0},{SIZE,SIZE}};
 
     public Green_S() {
-        super(2);
+        super(2, (byte) 2);
 
         this.flat = false;
         int number_of_blocks = 4;

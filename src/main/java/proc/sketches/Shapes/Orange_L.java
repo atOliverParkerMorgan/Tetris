@@ -16,7 +16,7 @@ public class Orange_L extends Shape{
     private final int[][] rotate4 = new int[][]{{0,-2*SIZE},{-SIZE,-SIZE},{0,0},{SIZE,SIZE}};
 
     public Orange_L() {
-        super(3);
+        super(3, (byte) 4);
 
         this.flat = 1;
         int number_of_blocks = 4;

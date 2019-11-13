@@ -5,7 +5,8 @@ import proc.sketches.Blocks.Block;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shape{
+public class Shape implements Cloneable{
+
     ArrayList<Block> allblocks;
     static final int SIZE = 30;
     static final int max_X = 300;
@@ -17,9 +18,12 @@ public class Shape{
 
     private int type;
 
-    public Shape(int type){
+    public final byte states;
+
+    public Shape(int type, byte states){
         this.allblocks = new ArrayList<>();
         this.type = type;
+        this.states = states;
     }
 
     private boolean overlap(double x, double y){
@@ -206,6 +210,8 @@ public class Shape{
     public int getType() {
         return type;
     }
+
+
 }
 
 
