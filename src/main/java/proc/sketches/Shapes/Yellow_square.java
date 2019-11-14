@@ -2,7 +2,7 @@ package proc.sketches.Shapes;
 
 import proc.sketches.Blocks.Block;
 
-public class Yellow_square extends Shape{
+public class Yellow_square extends Shape implements Cloneable{
     public Yellow_square() {
         super(6, (byte) 1);
 

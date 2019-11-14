@@ -3,7 +3,7 @@ package proc.sketches.Shapes;
 import proc.sketches.Blocks.Block;
 
 
-public class Orange_L extends Shape{
+public class Orange_L extends Shape implements Cloneable{
     private byte flat;
 
     // rotate positions

@@ -175,15 +175,25 @@ public class MAIN extends PApplet {
         }
         // check for collision with the bottom of the screen and with other objects
         if(!dead) {
-            checkCollision();
+            if(checkCollision(moving_shape)){
+                actOnCollision();
+            }
+
         }
     }
     public void keyPressed() {
         if(!dead) {
+            if(key=='a'){
+                try {
+                    ai.bestMove(moving_shape);
+                        //System.out.println("X: "+cord[0]+"Y: "+cord[1]);
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
+
             if (keyCode == LEFT) {
                 // move on block left
-                ai.setGrid(Spot.getGrid());
-                //System.out.println(ai.aggregateHeights(moving_shape));
                 moving_shape.move_left();
             } else if (keyCode == RIGHT) {
                 // move on block right
@@ -215,7 +225,9 @@ public class MAIN extends PApplet {
             } else if (keyCode == DOWN) {
                 // move on block down
                 moving_shape.move_down();
-                checkCollision();
+                if(checkCollision(moving_shape)){
+                    actOnCollision();
+                }
             }
         }
     }
@@ -260,26 +272,28 @@ public class MAIN extends PApplet {
         next_Shapes[2] = pickRandomShape();
 
     }
+    private void actOnCollision(){
+        //_.._
 
-    private void checkCollision(){
+        // adds an extra second for last second moves
+        moving_shape.move_up();
+
+
+        Spot.deleteBlocks();
+        moving_shape = next_Shapes[0];
+        Shift();
+
+        Shape.getAll_Shapes().add(moving_shape);
+    }
+
+
+    protected boolean checkCollision(Shape moving_shape){
 
         //collision logic
-        main_loop:
         for(Block block: moving_shape.getAllblocks()){
             // at the bottom of the screen
             if(block.y==Shape.getMax_Y()){
-                //_.._
-
-                // adds an extra second for last second moves
-                moving_shape.move_up();
-
-
-                Spot.deleteBlocks();
-                moving_shape = next_Shapes[0];
-                Shift();
-
-                Shape.getAll_Shapes().add(moving_shape);
-                break;
+               return true;
             }
             //checking for all collisions with all blocks
             else{
@@ -292,24 +306,13 @@ public class MAIN extends PApplet {
 
                         if(b.x==block.x && b.y==block.y){
 
-                            // adds an extra second for last second moves
-                            moving_shape.move_up();
-
-                            //check if row is filled if so delete the row and move down all blocks
-                            Spot.deleteBlocks();
-
-                            // new shape
-                            moving_shape = next_Shapes[0];
-                            Shift();
-                            Shape.getAll_Shapes().add(moving_shape);
-
-                            // break the main loop
-                            break main_loop;
+                            return true;
                         }
                     }
                 }
             }
         }
+        return false;
     }
 
 

@@ -9,7 +9,6 @@ import java.util.Objects;
 public class Spot {
     private boolean occupied;
 
-
     private static double score = 0;
     private static double level = 1.0;
     private static int startTime = 1000; // start Time one second can get as low as 0,3 seconds
@@ -41,7 +40,7 @@ public class Spot {
         this.y = y;
     }
 
-    private static Spot getSpot(int x, int y) {
+    private static Spot getSpot(int x, int y, Spot[][] Grid) {
         // look throw the grid => if Spot is found then return else return null
 
         for (Spot[] spots : Grid) {
@@ -70,14 +69,35 @@ public class Spot {
                 int x = (int) block.x;
                 int y = (int) block.y;
 
-                if (Spot.getSpot(x, y) != null) {
-                    Objects.requireNonNull(Spot.getSpot(x, y)).occupied = true;
+                if (Spot.getSpot(x, y, Grid) != null) {
+                    Objects.requireNonNull(Spot.getSpot(x, y, Grid)).occupied = true;
 
                 }
             }
         }
 
     }
+    public static Spot[][] addPieceToGrid(Shape addShape, Spot[][] Grid){
+        resetGrid();
+
+        for (Block block : addShape.getAllblocks()) {
+            int x = (int) block.x;
+            int y = (int) block.y;
+
+
+
+            if (Spot.getSpot(x, y, Grid) != null) {
+                Objects.requireNonNull(Spot.getSpot(x, y, Grid)).occupied = true;
+                System.out.println("X: "+ x +" Y: "+y);
+
+            }else {
+                System.out.println("ERROR");
+            }
+        }
+        return Grid;
+
+    }
+
     public static void deleteBlocks() {
         // delete a row of block if you find a full row of block
         resetGrid();

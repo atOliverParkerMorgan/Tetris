@@ -2,25 +2,25 @@ package proc.sketches.AI;
 
 import proc.sketches.Blocks.Block;
 import proc.sketches.Grid.Spot;
-import proc.sketches.Shapes.Shape;
+import proc.sketches.MAIN;
+import proc.sketches.Shapes.*;
 
-public class AI {
-    private Spot[][] Grid;
+public class AI extends MAIN {
+
     private int[][] bitMap;
 
 
     public AI(Spot[][] Grid, Shape movingSpot) {
 
-        this.bitMap = getGridInBits(movingSpot);
-        this.Grid = Grid;
+        this.bitMap = getGridInBitsWithoutMovingShape(movingSpot,Grid);
+
 
     }
 
-    public AI() {
-        this.Grid = null;
+    public AI(){
     }
 
-    private int[][] getGridInBits(Shape movingSpot) {
+    private int[][] getGridInBitsWithoutMovingShape(Shape movingSpot, Spot[][]Grid) {
         int[][] bitMap = new int[Shape.getNum_Y()][Shape.getNum_X()];
         for (int y = 0; y < Shape.getNum_Y(); y++) {
             for (int x = 0; x < Shape.getNum_X(); x++) {
@@ -39,6 +39,22 @@ public class AI {
 
         }
 
+
+        return bitMap;
+
+
+    }
+    private int[][] getGridInBitsWithMovingShape(Spot[][]Grid) {
+        int[][] bitMap = new int[Shape.getNum_Y()][Shape.getNum_X()];
+        for (int y = 0; y < Shape.getNum_Y(); y++) {
+            for (int x = 0; x < Shape.getNum_X(); x++) {
+                if (Grid[y][x].isOccupied()) {
+                    bitMap[y][x] = 0;
+                } else {
+                    bitMap[y][x] = 1;
+                }
+            }
+        }
 
         return bitMap;
 
@@ -64,9 +80,9 @@ public class AI {
     }
 
 
-    public int getNumberOfHoles(Shape movingBlock) {
+    public int getNumberOfHoles(Shape movingBlock,Spot[][] Grid) {
 
-        bitMap = getGridInBits(movingBlock);
+        bitMap = getGridInBitsWithoutMovingShape(movingBlock, Grid);
         int foundHoles = 0;
 
         for (int y = 0; y < Shape.getNum_Y(); y++) {
@@ -85,8 +101,8 @@ public class AI {
         return foundHoles;
     }
 
-    public int getBumps(Shape moveShape) {
-        int[][] bitmap = getGridInBits(moveShape);
+    public int getBumps(Shape moveShape, Spot[][] Grid) {
+        int[][] bitmap = getGridInBitsWithoutMovingShape(moveShape, Grid);
 
         int[] values = new int[Shape.getNum_X()];
 
@@ -105,7 +121,6 @@ public class AI {
         }
         int all = 0;
         for (int v = 0; v < Shape.getNum_X(); v++) {
-            System.out.println(values[v]);
             if (v + 1 < values.length) {
                 int difference = values[v] - values[v + 1];
                 if (difference < 0) {
@@ -120,8 +135,8 @@ public class AI {
         return all;
     }
 
-    public int aggregateHeights(Shape moveShape) {
-        int[][] bitmap = getGridInBits(moveShape);
+    public int aggregateHeights(Shape moveShape, Spot[][] Grid) {
+        int[][] bitmap = getGridInBitsWithoutMovingShape(moveShape, Grid);
 
         int[] values = new int[Shape.getNum_X()];
 
@@ -148,8 +163,8 @@ public class AI {
 
     }
 
-    public int getNumberOfLines(Shape moveShape) {
-        int[][] bitmap = getGridInBits(moveShape);
+    public int getNumberOfLines(Shape moveShape, Spot[][] Grid) {
+        int[][] bitmap = getGridInBitsWithoutMovingShape(moveShape, Grid);
         int numberOfLines = 0;
 
         for (int y = 0; y < Shape.getNum_Y(); y++) {
@@ -167,12 +182,15 @@ public class AI {
         return numberOfLines;
     }
 
-    public int[] bestMove(Shape moveShape) throws CloneNotSupportedException {
+    public double[][] bestMove(Shape moveShape) throws CloneNotSupportedException {
         double weight_a = -0.510066;
         double weight_b = 0.76066;
         double weight_c = -0.35663;
         double weight_d = -0.18443;
-        moveShape.clone();
+
+        Spot[][] GridClone = Spot.getGrid().clone();
+        Spot[][] Grid = null;
+        // move left
         // move left
         boolean moveLeft = true;
         while (moveLeft) {
@@ -186,34 +204,81 @@ public class AI {
         }
 
 
+        double highestFitness = 0;
+        double[][] currentXYofShape = new double[][]{{0,0},{0,0},{0,0},{0,0}};
+
+
         for (int x = 0; x < Shape.getNum_X(); x++) {
             for (int r = 0; r < moveShape.states; r++) {
+                Shape moveShapeClone = (Shape) moveShape.clone();
 
-                Spot[][] Grid = Spot.getGrid().clone();
+                // rotating
+                if (moveShapeClone.getType() == 0) {
+                    Blue_line line = (Blue_line) moveShapeClone;
+                    line.rotate_All();
+                } else if (moveShapeClone.getType() == 1) {
+                    DarkBlue_L L = (DarkBlue_L) moveShapeClone;
+                    L.rotate_All();
+                } else if (moveShapeClone.getType() == 2) {
+                    Green_S S = (Green_S) moveShapeClone;
+                    S.rotate_All();
+                } else if (moveShapeClone.getType() == 3) {
+                    Orange_L L = (Orange_L) moveShapeClone;
+                    L.rotate_All();
+                } else if (moveShapeClone.getType() == 4) {
+                    Purple_T T = (Purple_T) moveShapeClone;
+                    T.rotate_All();
+                } else if (moveShapeClone.getType() == 5) {
+                    Red_Z Z = (Red_Z) moveShapeClone;
+                    Z.rotate_All();
+                }
+
+                while (!checkCollision(moveShapeClone)){
+                    moveShapeClone.move_down();
+               }
+
+                printGrid();
+
+                double fitness = weight_a * aggregateHeights(moveShape, Grid) + weight_b * getNumberOfLines(moveShape,Grid) +
+                        weight_c * getNumberOfHoles(moveShape,Grid) + weight_d * getBumps(moveShape,Grid);
 
 
-                double fitness = weight_a * aggregateHeights(moveShape) + weight_b * getNumberOfLines(moveShape) +
-                        weight_c * getNumberOfHoles(moveShape) + weight_d * getBumps(moveShape);
+                if(fitness>highestFitness){
+                    highestFitness = fitness;
+
+                    int index = 0;
+                    for(Block block:moveShapeClone.getAllblocks()){
+                        currentXYofShape[index] = new double[]{block.x,block.y};
+                        index++;
+                    }
+
+                }
 
 
             }
             moveShape.move_right();
         }
 
-        return new int[]{0,0};
+        return currentXYofShape;
+    }
+
+    private void printGrid(){
+        int[][]bitMap = getGridInBitsWithMovingShape(Spot.getGrid());
+
+        for(int[] line: bitMap){
+            StringBuilder printLine = new StringBuilder();
+            for(int bit:line){
+                printLine.append(bit).append(' ');
+            }
+            System.out.println(printLine.toString());
+        }
+        System.out.println();
+
+
     }
 
 
 
-
-
-    public void setGrid(Spot[][] grid) {
-        Grid = grid;
-    }
-
-    public Spot[][] getGrid() {
-        return Grid;
-    }
 
 
 

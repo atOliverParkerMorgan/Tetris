@@ -8,6 +8,8 @@ import java.util.List;
 public class Shape{
 
     ArrayList<Block> allblocks;
+    private boolean isMoving = true;
+
     static final int SIZE = 30;
     static final int max_X = 300;
     private static final int max_Y = 600;
@@ -184,6 +186,8 @@ public class Shape{
 
     }
 
+
+
     public ArrayList<Block> getAllblocks() {
         return allblocks;
     }
@@ -214,6 +218,14 @@ public class Shape{
 
     public int getType() {
         return type;
+    }
+
+    public boolean isMoving() {
+        return isMoving;
+    }
+
+    public void setMoving(boolean moving) {
+        isMoving = moving;
     }
 
 

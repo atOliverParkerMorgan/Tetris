@@ -2,9 +2,7 @@ package proc.sketches.Shapes;
 
 import proc.sketches.Blocks.Block;
 
-import java.io.Serializable;
-
-public class Blue_line extends Shape implements Serializable {
+public class Blue_line extends Shape implements Cloneable {
 
     private boolean flat;
 
