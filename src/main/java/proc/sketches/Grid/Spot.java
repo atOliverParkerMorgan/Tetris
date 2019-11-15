@@ -4,6 +4,7 @@ import proc.sketches.Blocks.Block;
 import proc.sketches.Shapes.Shape;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 public class Spot {
@@ -75,6 +76,29 @@ public class Spot {
                 }
             }
         }
+
+    }
+    public static Spot[][] resetGrid(List<Shape> AllShapes, Spot[][] Grid) {
+        // change all Spots to unoccupied the update all spots depending on the placement of all of the blocks
+
+        for (int y = 0; y < Shape.getNum_Y(); y++) {
+            for (int x = 0; x < Shape.getNum_X(); x++) {
+                Grid[y][x].occupied = false;
+            }
+        }
+        for (Shape shape : AllShapes) {
+            for (Block block : shape.getAllblocks()) {
+                int x = (int) block.x;
+                int y = (int) block.y;
+
+                if (Spot.getSpot(x, y, Grid) != null) {
+                    Objects.requireNonNull(Spot.getSpot(x, y, Grid)).occupied = true;
+
+                }
+            }
+        }
+
+        return Grid;
 
     }
     public static Spot[][] addPieceToGrid(Shape addShape, Spot[][] Grid){

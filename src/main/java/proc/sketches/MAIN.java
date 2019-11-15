@@ -246,7 +246,6 @@ public class MAIN extends PApplet {
         // generate a random shape
         int rand = (int)(Math.random()*7);
 
-
         if(rand==0){
             return new Blue_line();
         }else if(rand==1){
@@ -305,6 +304,34 @@ public class MAIN extends PApplet {
                         }
 
                         if(b.x==block.x && b.y==block.y){
+
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    protected boolean checkCollisionForAI(Shape moving_shape){
+
+        //collision logic
+        for(Block block: moving_shape.getAllblocks()){
+            // at the bottom of the screen
+            if(block.y+Shape.getSIZE()==Shape.getMax_Y()){
+                return true;
+            }
+            //checking for all collisions with all blocks
+            else{
+                for(int index = 0; index<Shape.getAll_Shapes().size()-1;index++){
+                    for(Block b: Shape.getAll_Shapes().get(index).getAllblocks()){
+                        if(b.y==0){
+                            dead = true;
+                            System.out.println("you have died :((");
+                        }
+
+                        if(b.x==block.x && b.y==block.y+Shape.getSIZE()){
 
                             return true;
                         }

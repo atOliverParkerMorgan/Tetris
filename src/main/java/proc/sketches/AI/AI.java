@@ -5,6 +5,8 @@ import proc.sketches.Grid.Spot;
 import proc.sketches.MAIN;
 import proc.sketches.Shapes.*;
 
+import java.util.List;
+
 public class AI extends MAIN {
 
     private int[][] bitMap;
@@ -188,7 +190,8 @@ public class AI extends MAIN {
         double weight_c = -0.35663;
         double weight_d = -0.18443;
 
-        Spot[][] GridClone = Spot.getGrid().clone();
+        List<Shape> AllShapesClone = Shape.getAll_Shapes();
+        Spot[][] GridClone = Spot.getGrid();
         Spot[][] Grid = null;
         // move left
         // move left
@@ -210,33 +213,34 @@ public class AI extends MAIN {
 
         for (int x = 0; x < Shape.getNum_X(); x++) {
             for (int r = 0; r < moveShape.states; r++) {
-                Shape moveShapeClone = (Shape) moveShape.clone();
+                AllShapesClone.remove(AllShapesClone.size()-1);
+                AllShapesClone.add(moveShape);
 
                 // rotating
-                if (moveShapeClone.getType() == 0) {
-                    Blue_line line = (Blue_line) moveShapeClone;
+                if (moveShape.getType() == 0) {
+                    Blue_line line = (Blue_line) moveShape;
                     line.rotate_All();
-                } else if (moveShapeClone.getType() == 1) {
-                    DarkBlue_L L = (DarkBlue_L) moveShapeClone;
+                } else if (moveShape.getType() == 1) {
+                    DarkBlue_L L = (DarkBlue_L) moveShape;
                     L.rotate_All();
-                } else if (moveShapeClone.getType() == 2) {
-                    Green_S S = (Green_S) moveShapeClone;
+                } else if (moveShape.getType() == 2) {
+                    Green_S S = (Green_S) moveShape;
                     S.rotate_All();
-                } else if (moveShapeClone.getType() == 3) {
-                    Orange_L L = (Orange_L) moveShapeClone;
+                } else if (moveShape.getType() == 3) {
+                    Orange_L L = (Orange_L) moveShape;
                     L.rotate_All();
-                } else if (moveShapeClone.getType() == 4) {
-                    Purple_T T = (Purple_T) moveShapeClone;
+                } else if (moveShape.getType() == 4) {
+                    Purple_T T = (Purple_T) moveShape;
                     T.rotate_All();
-                } else if (moveShapeClone.getType() == 5) {
-                    Red_Z Z = (Red_Z) moveShapeClone;
+                } else if (moveShape.getType() == 5) {
+                    Red_Z Z = (Red_Z) moveShape;
                     Z.rotate_All();
                 }
 
-                while (!checkCollision(moveShapeClone)){
-                    moveShapeClone.move_down();
-               }
-
+                while (!checkCollisionForAI(moveShape)){
+                    moveShape.move_down();
+                }
+                Grid = Spot.resetGrid(Shape.getAll_Shapes(), GridClone);
                 printGrid();
 
                 double fitness = weight_a * aggregateHeights(moveShape, Grid) + weight_b * getNumberOfLines(moveShape,Grid) +
@@ -247,7 +251,7 @@ public class AI extends MAIN {
                     highestFitness = fitness;
 
                     int index = 0;
-                    for(Block block:moveShapeClone.getAllblocks()){
+                    for(Block block:moveShape.getAllblocks()){
                         currentXYofShape[index] = new double[]{block.x,block.y};
                         index++;
                     }
