@@ -185,8 +185,8 @@ public class MAIN extends PApplet {
         if(!dead) {
             if(key=='a'){
                 try {
-                    ai.bestMove(moving_shape);
-                        //System.out.println("X: "+cord[0]+"Y: "+cord[1]);
+                    double[][] cord = ai.bestMove(moving_shape);
+
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -244,22 +244,22 @@ public class MAIN extends PApplet {
     }
     private Shape pickRandomShape(){
         // generate a random shape
-        int rand = (int)(Math.random()*7);
-
+       // int rand = (int)(Math.random()*7);
+        int rand = 0;
         if(rand==0){
-            return new Blue_line();
+            return new Blue_line(Shape.getMax_X()/2-Shape.getSIZE());
         }else if(rand==1){
-            return new DarkBlue_L();
+            return new DarkBlue_L(Shape.getMax_X()/2-2*Shape.getSIZE());
         }else if(rand==2){
-            return new Green_S();
+            return new Green_S(Shape.getMax_X()/2-2*Shape.getSIZE());
         }else if(rand==3){
-            return new Orange_L();
+            return new Orange_L(Shape.getMax_X()/2-2*Shape.getSIZE());
         }else if(rand==4){
-            return new Purple_T();
+            return new Purple_T(Shape.getMax_X()/2-2*Shape.getSIZE());
         }else if(rand==5){
-            return new Red_Z();
+            return new Red_Z(Shape.getMax_X()/2-2*Shape.getSIZE());
         }else{
-            return new Yellow_square();
+            return new Yellow_square(Shape.getMax_X()/2-2*Shape.getSIZE());
         }
 
     }

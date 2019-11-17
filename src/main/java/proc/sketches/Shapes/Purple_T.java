@@ -2,9 +2,12 @@ package proc.sketches.Shapes;
 
 import proc.sketches.Blocks.Block;
 
-public class Purple_T extends Shape implements Cloneable{
-    private byte flat;
+import java.io.Serializable;
+import java.util.ArrayList;
 
+public class Purple_T extends Shape implements Serializable {
+    private byte flat;
+    public final int start_X;
     // rotate positions
     private final int[][] rotate1 = new int[][]{{-SIZE,-SIZE},{SIZE,-SIZE},{0,0},{-SIZE,SIZE}};
 
@@ -14,15 +17,14 @@ public class Purple_T extends Shape implements Cloneable{
 
     private final int[][] rotate4 = new int[][]{{-SIZE,SIZE},{-SIZE,-SIZE},{0,0},{SIZE,SIZE}};
 
-    public Purple_T() {
+    private final int[][] structure = new int[][]{{0, SIZE}, {-SIZE, 0}, {0, 0}, {SIZE, 0}};
+
+    public Purple_T(int start_X) {
         super(4, (byte) 4);
-
+        this.start_X = start_X;
         this.flat = 1;
-        int number_of_blocks = 4;
 
-        int start_X = max_X/2-2*SIZE;
-
-        for(int index = 0; index < number_of_blocks; index++){
+        for(int index = 0; index < numberOfBlocks; index++){
             int[][] structure = new int[][]{{0, SIZE}, {-SIZE, 0}, {0, 0}, {SIZE, 0}};
             Block b = new Block(SIZE, start_X + structure[index][0], SIZE + structure[index][1]);
             this.allblocks.add(b);
@@ -55,6 +57,14 @@ public class Purple_T extends Shape implements Cloneable{
                 this.flat = 1;
             }
 
+        }
+    }
+
+    public void ChangeYto0(){
+        this.allblocks = new ArrayList<>();
+        for(int index = 0; index < numberOfBlocks; index++){
+            Block b = new Block(SIZE, start_X + structure[index][0], structure[index][1]);
+            this.allblocks.add(b);
         }
     }
 }
