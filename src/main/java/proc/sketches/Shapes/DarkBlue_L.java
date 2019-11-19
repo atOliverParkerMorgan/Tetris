@@ -5,7 +5,7 @@ import proc.sketches.Blocks.Block;
 import java.util.ArrayList;
 
 
-public class DarkBlue_L extends Shape implements Cloneable{
+public class DarkBlue_L extends Shape{
     private byte flat;
     public final int start_X;
     // rotate positions
@@ -41,27 +41,7 @@ public class DarkBlue_L extends Shape implements Cloneable{
 
 
     public void rotate_All(){
-        if(this.flat==1){
-            int[][] all = new int[][]{rotate1[0],rotate1[1],rotate1[2],rotate1[3]};
-            if(this.rotate(all, SIZE)) {
-                this.flat = 2;
-            }
-        }else if(this.flat==2){
-            int[][] all = new int[][]{rotate2[0],rotate2[1],rotate2[2],rotate2[3]};
-            if(this.rotate(all, SIZE)) {
-                this.flat = 3;
-            }
-        }else if(this.flat==3){
-            int[][] all = new int[][]{rotate3[0],rotate3[1],rotate3[2],rotate3[3]};
-            if(this.rotate(all, SIZE)) {
-                this.flat = 4;
-            }
-        }else if(this.flat == 4){
-            int[][] all = new int[][]{rotate4[0],rotate4[1],rotate4[2],rotate4[3]};
-            if(this.rotate(all, SIZE)) {
-                this.flat = 1;
-            }
-        }
+        flat = rotateFourStates(flat,rotate1,rotate2,rotate3,rotate4);
     }
 
     public void ChangeYto0(){

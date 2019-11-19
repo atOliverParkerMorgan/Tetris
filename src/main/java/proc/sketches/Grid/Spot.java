@@ -15,8 +15,8 @@ public class Spot {
     private static int startTime = 1000; // start Time one second can get as low as 0,3 seconds
     private final static int getFaster = 100; // rate of speeding up
 
-    public int x;
-    public int y;
+    private int x;
+    private int y;
 
     private static Spot[][] Grid = new Spot[Shape.getNum_Y()][Shape.getNum_X()];
 
@@ -66,15 +66,7 @@ public class Spot {
             }
         }
         for (Shape shape : Shape.getAll_Shapes()) {
-            for (Block block : shape.getAllblocks()) {
-                int x = (int) block.x;
-                int y = (int) block.y;
-
-                if (Spot.getSpot(x, y, Grid) != null) {
-                    Objects.requireNonNull(Spot.getSpot(x, y, Grid)).occupied = true;
-
-                }
-            }
+            updateGrid(Grid, shape);
         }
 
     }
@@ -87,40 +79,26 @@ public class Spot {
             }
         }
         for (Shape shape : AllShapes) {
-            for (Block block : shape.getAllblocks()) {
-                int x = (int) block.x;
-                int y = (int) block.y;
-
-                if (Spot.getSpot(x, y, Grid) != null) {
-                    Objects.requireNonNull(Spot.getSpot(x, y, Grid)).occupied = true;
-
-                }
-            }
+            updateGrid(Grid, shape);
         }
 
         return Grid;
 
     }
-    public static Spot[][] addPieceToGrid(Shape addShape, Spot[][] Grid){
-        resetGrid();
 
-        for (Block block : addShape.getAllblocks()) {
+    private static void updateGrid(Spot[][] Grid, Shape shape) {
+        for (Block block : shape.getAllblocks()) {
             int x = (int) block.x;
             int y = (int) block.y;
 
-
-
             if (Spot.getSpot(x, y, Grid) != null) {
                 Objects.requireNonNull(Spot.getSpot(x, y, Grid)).occupied = true;
-                System.out.println("X: "+ x +" Y: "+y);
 
-            }else {
-                System.out.println("ERROR");
             }
         }
-        return Grid;
-
     }
+
+
 
     public static void deleteBlocks() {
         // delete a row of block if you find a full row of block
@@ -206,26 +184,11 @@ public class Spot {
         return startTime;
     }
 
-    public static int getGetFaster() {
-        return getFaster;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
 
     public static Spot[][] getGrid() {
         return Grid;
     }
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 }
 
 

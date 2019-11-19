@@ -8,7 +8,6 @@ import java.util.List;
 public class Shape{
 
     ArrayList<Block> allblocks;
-    private boolean isMoving = true;
 
     static final int SIZE = 30;
     static final int max_X = 300;
@@ -151,7 +150,7 @@ public class Shape{
         }
         return false;
     }
-    boolean rotate(int[][] all, int addToBoundRight){
+    private boolean rotate(int[][] all, int addToBoundRight){
         // rotates the shape if other shapes interferer in the rotation it fixes the rotation according to
         // the other shapes
         if (bound_check(all, addToBoundRight)) {
@@ -196,6 +195,46 @@ public class Shape{
         return allblocks;
     }
 
+    boolean rotateTwoStates(boolean flat, int[][] rotate1, int[][] rotate2){
+        if(flat){
+            int[][] all = new int[][]{rotate2[0],rotate2[1],rotate2[2],rotate2[3]};
+            if(this.rotate(all, 2*SIZE)) {
+                return false;
+            }
+        }else{
+            int[][] all = new int[][]{rotate1[0],rotate1[1],rotate1[2],rotate1[3]};
+            if(this.rotate(all, 2*SIZE)) {
+                return true;
+            }
+        }
+        return flat;
+
+    }
+    byte rotateFourStates(byte flat, int[][] rotate1, int[][] rotate2, int[][] rotate3, int[][] rotate4){
+        if(flat==1){
+            int[][] all = new int[][]{rotate1[0],rotate1[1],rotate1[2],rotate1[3]};
+            if(this.rotate(all, SIZE)) {
+                return 2;
+            }
+        }else if(flat==2){
+            int[][] all = new int[][]{rotate2[0],rotate2[1],rotate2[2],rotate2[3]};
+            if(this.rotate(all, SIZE)) {
+                return 3;
+            }
+        }else if(flat==3){
+            int[][] all = new int[][]{rotate3[0],rotate3[1],rotate3[2],rotate3[3]};
+            if(this.rotate(all, SIZE)) {
+                return 4;
+            }
+        }else if(flat == 4){
+            int[][] all = new int[][]{rotate4[0],rotate4[1],rotate4[2],rotate4[3]};
+            if(this.rotate(all, SIZE)) {
+                return 1;
+            }
+        }
+        return flat;
+    }
+
     public static int getSIZE() {
         return SIZE;
     }
@@ -224,13 +263,6 @@ public class Shape{
         return type;
     }
 
-    public boolean isMoving() {
-        return isMoving;
-    }
-
-    public void setMoving(boolean moving) {
-        isMoving = moving;
-    }
 
 
 }
