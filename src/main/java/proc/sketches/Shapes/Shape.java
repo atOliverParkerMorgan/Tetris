@@ -21,13 +21,12 @@ public class Shape{
 
     public final byte states;
 
-    public final int numberOfBlocks;
+    public static final int numberOfBlocks = 4;
 
     public Shape(int type, byte states){
         this.allblocks = new ArrayList<>();
         this.type = type;
         this.states = states;
-        this.numberOfBlocks = 4;
     }
 
     @Override
@@ -263,8 +262,9 @@ public class Shape{
         return type;
     }
 
-
-
+    public byte getStates() {
+        return states;
+    }
 }
 
 

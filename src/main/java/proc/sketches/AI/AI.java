@@ -1,25 +1,22 @@
 package proc.sketches.AI;
 
-import proc.sketches.Blocks.Block;
 import proc.sketches.Grid.Spot;
 import proc.sketches.MAIN;
-import proc.sketches.Shapes.*;
-
-import java.util.List;
+import proc.sketches.Shapes.Shape;
 
 public class AI extends MAIN {
     private Bitmap bitMap;
     public AI(Shape movingShape, Spot[][] Grid){
 
-        this.bitMap = new Bitmap(getCords(movingShape), Grid);
+        this.bitMap = new Bitmap(getCords(movingShape), Grid, movingShape.getType());
     }
 
     private int[][] getCords(Shape movingShape){
         int[][] cordOfMovingShape = new int[4][2];
 
-        for(int i = 0;i<4;i++){
-            cordOfMovingShape[0][0] = (int) movingShape.getAllblocks().get(i).x / Shape.getNum_X();
-            cordOfMovingShape[0][1] = (int) movingShape.getAllblocks().get(i).y / Shape.getNum_Y();
+        for(int i = 0;i<Shape.numberOfBlocks;i++){
+            cordOfMovingShape[i][0] = (int) movingShape.getAllblocks().get(i).x / Shape.getSIZE();
+            cordOfMovingShape[i][1] = (int) movingShape.getAllblocks().get(i).y / Shape.getSIZE();
         }
         return cordOfMovingShape;
     }
@@ -44,7 +41,7 @@ public class AI extends MAIN {
     }
 
 
-    public int getNumberOfHoles() {
+    private int getNumberOfHoles() {
 
         int foundHoles = 0;
 
@@ -64,7 +61,7 @@ public class AI extends MAIN {
         return foundHoles;
     }
 
-    public int getBumps(Shape moveShape, Spot[][] Grid) {
+    private int getBumps() {
 
         int[] values = new int[Shape.getNum_X()];
 
@@ -97,7 +94,7 @@ public class AI extends MAIN {
         return all;
     }
 
-    public int aggregateHeights(Shape moveShape, Spot[][] Grid) {
+    private int aggregateHeights() {
 
         int[] values = new int[Shape.getNum_X()];
 
@@ -124,7 +121,7 @@ public class AI extends MAIN {
 
     }
 
-    public int getNumberOfLines(Shape moveShape, Spot[][] Grid) {
+    private int getNumberOfLines() {
         int numberOfLines = 0;
 
         for (int y = 0; y < Shape.getNum_Y(); y++) {
@@ -148,10 +145,31 @@ public class AI extends MAIN {
         double weight_c = -0.35663;
         double weight_d = -0.18443;
 
-        double[][] currentXYofShape = new double[][]{{0,0},{0,0},{0,0},{0,0}};
-        bitMap.syncBitmapWithGrid(Grid,getCords(moveShape));
+        double[][] currentXYofShape = new double[][]{{0,0},{0,0},{0,0},{0,0},{Integer.MIN_VALUE}};
+        double fitness = 0;
 
-        bitMap
+
+        bitMap = new Bitmap(getCords(moveShape),Grid,moveShape.getType());
+        bitMap.moveShapeLeft();
+        int cycle = bitMap.getNumberOfCycles();
+        System.out.println(cycle);
+        for(int outerIndex=0;outerIndex<cycle+2;outerIndex++){
+            bitMap.moveMovingShapeDown();
+            fitness = weight_a*aggregateHeights() + weight_b*getNumberOfLines()+weight_c*getNumberOfHoles()+weight_d*getBumps();
+            if(currentXYofShape[4][0]<fitness){
+                currentXYofShape[4][0] = fitness;
+                currentXYofShape = bitMap.getCords(currentXYofShape);
+            }
+            bitMap.syncBitmapWithGrid(Grid);
+            System.out.println("here");
+            printGrid();
+            bitMap.moveUp();
+            if(outerIndex<cycle+1){
+                bitMap.moveMovingShapeRight();
+            }
+        }
+
+
 
 
 

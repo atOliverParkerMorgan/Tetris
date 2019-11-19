@@ -38,7 +38,6 @@ public class MAIN extends PApplet {
 
 
     public void settings(){
-         ai = new AI();
         dead = false;
         next_Shapes = new Shape[3];
         for(int i=0;i<3;i++){
@@ -49,7 +48,7 @@ public class MAIN extends PApplet {
 
         // school dir
         //C:\Users\2019-e-morgan\IdeaProjects\Tetris\src\main\java\proc\sketches\sprites\
-        String base_dir = "C:\\Users\\2019-e-morgan\\IdeaProjects\\Tetris\\src\\main\\java\\proc\\sketches\\sprites\\";
+        String base_dir = "C:\\Users\\olive\\IdeaProjects\\tetris\\src\\main\\java\\proc\\sketches\\sprites\\";
 
         //all blocks
         darkBlue_block = loadImage(base_dir+"darkBlue.png");
@@ -71,6 +70,7 @@ public class MAIN extends PApplet {
         // And From your main() method or any other method
         Timer timer = new Timer();
         timer.schedule(new Move(), 0, Spot.getStartTime());
+        ai = new AI(moving_shape,Spot.getGrid());
 
     }public void draw(){
 
@@ -184,12 +184,8 @@ public class MAIN extends PApplet {
     public void keyPressed() {
         if(!dead) {
             if(key=='a'){
-                try {
-                    double[][] cord = ai.bestMove(moving_shape);
+                double[][] cord = ai.bestMove(moving_shape,Spot.getGrid());
 
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
-                }
             }
 
             if (keyCode == LEFT) {
@@ -247,19 +243,19 @@ public class MAIN extends PApplet {
        // int rand = (int)(Math.random()*7);
         int rand = 0;
         if(rand==0){
-            return new Blue_line(Shape.getMax_X()/2-Shape.getSIZE());
+            return new Blue_line();
         }else if(rand==1){
-            return new DarkBlue_L(Shape.getMax_X()/2-2*Shape.getSIZE());
+            return new DarkBlue_L();
         }else if(rand==2){
-            return new Green_S(Shape.getMax_X()/2-2*Shape.getSIZE());
+            return new Green_S();
         }else if(rand==3){
-            return new Orange_L(Shape.getMax_X()/2-2*Shape.getSIZE());
+            return new Orange_L();
         }else if(rand==4){
-            return new Purple_T(Shape.getMax_X()/2-2*Shape.getSIZE());
+            return new Purple_T();
         }else if(rand==5){
-            return new Red_Z(Shape.getMax_X()/2-2*Shape.getSIZE());
+            return new Red_Z();
         }else{
-            return new Yellow_square(Shape.getMax_X()/2-2*Shape.getSIZE());
+            return new Yellow_square();
         }
 
     }

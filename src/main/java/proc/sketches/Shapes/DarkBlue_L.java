@@ -20,11 +20,11 @@ public class DarkBlue_L extends Shape{
 
     private final int[][] structure = new int[][]{{-SIZE, SIZE}, {-SIZE, 0}, {0, 0}, {SIZE, 0}};
 
-    public DarkBlue_L(int start_X) {
+    public DarkBlue_L() {
         super(1,(byte) 4);
 
         this.flat = 1;
-        this.start_X = start_X;
+        this.start_X = max_X/2-2*SIZE;
         int start_Y = 0;
 
         // starting structure

@@ -19,9 +19,9 @@ public class Orange_L extends Shape{
 
     private final int[][] structure = new int[][]{{-SIZE,-SIZE}, {-SIZE, 0}, {0, 0}, {SIZE, 0}};
 
-    public Orange_L(int start_X) {
+    public Orange_L() {
         super(3, (byte) 4);
-        this.start_X = start_X;
+        this.start_X = max_X/2-2*SIZE;;
         this.flat = 1;
 
         for(int index = 0; index < numberOfBlocks; index++){
