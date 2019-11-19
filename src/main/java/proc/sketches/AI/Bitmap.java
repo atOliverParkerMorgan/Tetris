@@ -5,14 +5,11 @@ import proc.sketches.Shapes.Shape;
 
 public class Bitmap {
 
-    private int[][] Bitmap;
+    public int[][] Bitmap;
     private int[][] movingShapeCords;
-    Bitmap(int[][] movingShapeCords){
+    Bitmap(int[][] movingShapeCords,Spot[][] Grid){
         this.Bitmap = new int[Shape.getNum_Y()][Shape.getNum_X()];
-
-        this.resetBitmap(movingShapeCords);
-
-
+        syncBitmapWithGrid(Grid, movingShapeCords);
     }
 
     private void resetBitmap(int[][] movingShapeCords){
@@ -25,7 +22,7 @@ public class Bitmap {
 
     }
 
-    private void syncBitmapWithGrid(Spot[][] Grid){
+    public void syncBitmapWithGrid(Spot[][] Grid, int[][] movingShapeCords){
         for (int y = 0; y < Shape.getNum_Y(); y++) {
             for (int x = 0; x < Shape.getNum_X(); x++) {
                 if (Grid[y][x].isOccupied()) {
@@ -35,16 +32,20 @@ public class Bitmap {
                 }
             }
         }
+        for (int[] movingShapeCord : movingShapeCords) {
+            Bitmap[movingShapeCord[0]][movingShapeCord[1]] = 0;
+        }
 
     }
-    private boolean leftBound(){
-        for(int[] cords : movingShapeCords){
-            if(cords[0]-1<0){
+    private boolean leftBound() {
+        for (int[] cords : movingShapeCords) {
+            if (cords[0] - 1 < 0) {
                 return false;
             }
         }
         return true;
     }
+
     private boolean rightBound(){
         for(int[] cords : movingShapeCords){
             if(cords[0]+1>Shape.getNum_X()-1){
@@ -81,10 +82,11 @@ public class Bitmap {
         return true;
 
     }
-    private int getBit(int x, int y){
+    public int getBit(int x, int y){
         return Bitmap[y][x];
 
     }
+
 
 
 

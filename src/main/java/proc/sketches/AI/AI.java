@@ -8,89 +8,50 @@ import proc.sketches.Shapes.*;
 import java.util.List;
 
 public class AI extends MAIN {
+    private Bitmap bitMap;
+    public AI(Shape movingShape, Spot[][] Grid){
 
-    private int[][] bitMap;
-
-
-    public AI(Spot[][] Grid, Shape movingSpot) {
-
-        this.bitMap = getGridInBitsWithoutMovingShape(movingSpot,Grid);
-
-
+        this.bitMap = new Bitmap(getCords(movingShape), Grid);
     }
 
-    public AI(){
-    }
+    private int[][] getCords(Shape movingShape){
+        int[][] cordOfMovingShape = new int[4][2];
 
-    private int[][] getGridInBitsWithoutMovingShape(Shape movingSpot, Spot[][]Grid) {
-        int[][] bitMap = new int[Shape.getNum_Y()][Shape.getNum_X()];
-        for (int y = 0; y < Shape.getNum_Y(); y++) {
-            for (int x = 0; x < Shape.getNum_X(); x++) {
-                if (Grid[y][x].isOccupied()) {
-                    bitMap[y][x] = 0;
-                } else {
-                    bitMap[y][x] = 1;
-                }
-            }
+        for(int i = 0;i<4;i++){
+            cordOfMovingShape[0][0] = (int) movingShape.getAllblocks().get(i).x / Shape.getNum_X();
+            cordOfMovingShape[0][1] = (int) movingShape.getAllblocks().get(i).y / Shape.getNum_Y();
         }
-
-        for (Block block : movingSpot.getAllblocks()) {
-            if ((int) block.y / Shape.getSIZE() > 0 && (int) block.y / Shape.getSIZE() < Shape.getNum_Y()) {
-                bitMap[(int) block.y / Shape.getSIZE()][(int) block.x / Shape.getSIZE()] = 1;
-            }
-
-        }
-
-
-        return bitMap;
-
-
-    }
-    private int[][] getGridInBitsWithMovingShape(Spot[][]Grid) {
-        int[][] bitMap = new int[Shape.getNum_Y()][Shape.getNum_X()];
-        for (int y = 0; y < Shape.getNum_Y(); y++) {
-            for (int x = 0; x < Shape.getNum_X(); x++) {
-                if (Grid[y][x].isOccupied()) {
-                    bitMap[y][x] = 0;
-                } else {
-                    bitMap[y][x] = 1;
-                }
-            }
-        }
-
-        return bitMap;
-
-
+        return cordOfMovingShape;
     }
 
-    private boolean isHole(int x, int y, int[][] bitMap) {
+
+    private boolean isHole(int x, int y) {
         if (x != Shape.getNum_X() - 1) {
-            if (bitMap[y][x + 1] == 0) {
+            if (bitMap.getBit(x+1,y) == 0) {
                 return true;
             }
         }
         if (x != 0) {
-            if (bitMap[y][x - 1] == 0) {
+            if (bitMap.getBit(x-1,y) == 0) {
                 return true;
             }
         }
         if (y != 0) {
-            return bitMap[y - 1][x] == 0;
+            return bitMap.getBit(x,y-1) == 0;
         }
         return false;
 
     }
 
 
-    public int getNumberOfHoles(Shape movingBlock,Spot[][] Grid) {
+    public int getNumberOfHoles() {
 
-        bitMap = getGridInBitsWithoutMovingShape(movingBlock, Grid);
         int foundHoles = 0;
 
         for (int y = 0; y < Shape.getNum_Y(); y++) {
             for (int x = 0; x < Shape.getNum_X(); x++) {
-                if (bitMap[y][x] == 1) {
-                    if (isHole(x, y, bitMap)) {
+                if (bitMap.getBit(x,y) == 1) {
+                    if (isHole(x, y)) {
                         foundHoles++;
 
                     }
@@ -104,7 +65,6 @@ public class AI extends MAIN {
     }
 
     public int getBumps(Shape moveShape, Spot[][] Grid) {
-        int[][] bitmap = getGridInBitsWithoutMovingShape(moveShape, Grid);
 
         int[] values = new int[Shape.getNum_X()];
 
@@ -112,7 +72,7 @@ public class AI extends MAIN {
         for (int x = 0; x < Shape.getNum_X(); x++) {
             int highest = 0;
             for (int y = 0; y < Shape.getNum_Y(); y++) {
-                if (bitmap[y][x] == 0) {
+                if (bitMap.getBit(x,y) == 0) {
                     if (highest < 20 - y) {
                         highest = 20 - y;
                     }
@@ -138,7 +98,6 @@ public class AI extends MAIN {
     }
 
     public int aggregateHeights(Shape moveShape, Spot[][] Grid) {
-        int[][] bitmap = getGridInBitsWithoutMovingShape(moveShape, Grid);
 
         int[] values = new int[Shape.getNum_X()];
 
@@ -146,7 +105,7 @@ public class AI extends MAIN {
         for (int x = 0; x < Shape.getNum_X(); x++) {
             int highest = 0;
             for (int y = 0; y < Shape.getNum_Y(); y++) {
-                if (bitmap[y][x] == 0) {
+                if (bitMap.getBit(x,y) == 0) {
                     if (highest < 20 - y) {
                         highest = 20 - y;
                     }
@@ -166,13 +125,12 @@ public class AI extends MAIN {
     }
 
     public int getNumberOfLines(Shape moveShape, Spot[][] Grid) {
-        int[][] bitmap = getGridInBitsWithoutMovingShape(moveShape, Grid);
         int numberOfLines = 0;
 
         for (int y = 0; y < Shape.getNum_Y(); y++) {
             int blocksInLine = 0;
             for (int x = 0; x < Shape.getNum_X(); x++) {
-                if (bitmap[y][x] == 0) {
+                if (bitMap.getBit(x,y) == 0) {
                     blocksInLine++;
                 }
             }
@@ -184,14 +142,16 @@ public class AI extends MAIN {
         return numberOfLines;
     }
 
-    public double[][] bestMove(Shape moveShape) {
+    public double[][] bestMove(Shape moveShape,Spot[][] Grid) {
         double weight_a = -0.510066;
         double weight_b = 0.76066;
         double weight_c = -0.35663;
         double weight_d = -0.18443;
 
         double[][] currentXYofShape = new double[][]{{0,0},{0,0},{0,0},{0,0}};
+        bitMap.syncBitmapWithGrid(Grid,getCords(moveShape));
 
+        bitMap
 
 
 
@@ -199,9 +159,8 @@ public class AI extends MAIN {
     }
 
     private void printGrid(){
-        int[][]bitMap = getGridInBitsWithMovingShape(Spot.getGrid());
 
-        for(int[] line: bitMap){
+        for(int[] line: bitMap.Bitmap){
             StringBuilder printLine = new StringBuilder();
             for(int bit:line){
                 printLine.append(bit).append(' ');
@@ -218,7 +177,5 @@ public class AI extends MAIN {
 
 
 
-    public int[][] getBitMap() {
-        return bitMap;
-    }
+
 }
