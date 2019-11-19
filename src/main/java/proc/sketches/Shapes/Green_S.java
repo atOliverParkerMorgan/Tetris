@@ -2,7 +2,7 @@ package proc.sketches.Shapes;
 
 import proc.sketches.Blocks.Block;
 
-public class Green_S extends Shape implements Cloneable{
+public class Green_S extends Shape{
     private boolean flat;
 
     // rotate positions
@@ -32,17 +32,7 @@ public class Green_S extends Shape implements Cloneable{
 
 
     public void rotate_All(){
-        if(!this.flat){
-            int[][] all = new int[][]{rotate1[0],rotate1[1],rotate1[2],rotate1[3]};
-            if(this.rotate(all, SIZE)) {
-                this.flat = true;
-            }
-        }else{
-            int[][] all = new int[][]{rotate2[0],rotate2[1],rotate2[2],rotate2[3]};
-            if(this.rotate(all, SIZE)) {
-                this.flat = false;
-            }
-        }
+        flat = rotateTwoStates(flat, rotate1,rotate2);
 
     }
 }

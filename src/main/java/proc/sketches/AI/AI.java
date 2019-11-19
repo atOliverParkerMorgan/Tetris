@@ -184,84 +184,16 @@ public class AI extends MAIN {
         return numberOfLines;
     }
 
-    public double[][] bestMove(Shape moveShape) throws CloneNotSupportedException {
+    public double[][] bestMove(Shape moveShape) {
         double weight_a = -0.510066;
         double weight_b = 0.76066;
         double weight_c = -0.35663;
         double weight_d = -0.18443;
 
-        List<Shape> AllShapesClone = Shape.getAll_Shapes();
-        Spot[][] GridClone = Spot.getGrid();
-        Spot[][] Grid = null;
-        // move left
-        // move left
-        boolean moveLeft = true;
-        while (moveLeft) {
-            moveShape.move_left();
-            for (Block block : moveShape.getAllblocks()) {
-                if (block.x == 0) {
-                    moveLeft = false;
-                    break;
-                }
-            }
-        }
-
-
-        double highestFitness = 0;
         double[][] currentXYofShape = new double[][]{{0,0},{0,0},{0,0},{0,0}};
 
 
-        for (int x = 0; x < Shape.getNum_X(); x++) {
-            for (int r = 0; r < moveShape.states; r++) {
-                AllShapesClone.remove(AllShapesClone.size()-1);
-                AllShapesClone.add(moveShape);
 
-                // rotating
-                if (moveShape.getType() == 0) {
-                    Blue_line line = (Blue_line) moveShape;
-                    line.rotate_All();
-                } else if (moveShape.getType() == 1) {
-                    DarkBlue_L L = (DarkBlue_L) moveShape;
-                    L.rotate_All();
-                } else if (moveShape.getType() == 2) {
-                    Green_S S = (Green_S) moveShape;
-                    S.rotate_All();
-                } else if (moveShape.getType() == 3) {
-                    Orange_L L = (Orange_L) moveShape;
-                    L.rotate_All();
-                } else if (moveShape.getType() == 4) {
-                    Purple_T T = (Purple_T) moveShape;
-                    T.rotate_All();
-                } else if (moveShape.getType() == 5) {
-                    Red_Z Z = (Red_Z) moveShape;
-                    Z.rotate_All();
-                }
-
-                while (!checkCollisionForAI(moveShape)){
-                    moveShape.move_down();
-                }
-                Grid = Spot.resetGrid(Shape.getAll_Shapes(), GridClone);
-                printGrid();
-
-                double fitness = weight_a * aggregateHeights(moveShape, Grid) + weight_b * getNumberOfLines(moveShape,Grid) +
-                        weight_c * getNumberOfHoles(moveShape,Grid) + weight_d * getBumps(moveShape,Grid);
-
-
-                if(fitness>highestFitness){
-                    highestFitness = fitness;
-
-                    int index = 0;
-                    for(Block block:moveShape.getAllblocks()){
-                        currentXYofShape[index] = new double[]{block.x,block.y};
-                        index++;
-                    }
-
-                }
-
-
-            }
-            moveShape.move_right();
-        }
 
         return currentXYofShape;
     }
