@@ -150,22 +150,28 @@ public class AI extends MAIN {
 
 
         bitMap = new Bitmap(getCords(moveShape),Grid,moveShape.getType());
-        bitMap.moveShapeLeft();
-        int cycle = bitMap.getNumberOfCycles();
-        System.out.println(cycle);
-        for(int outerIndex=0;outerIndex<cycle+2;outerIndex++){
-            bitMap.moveMovingShapeDown();
-            fitness = weight_a*aggregateHeights() + weight_b*getNumberOfLines()+weight_c*getNumberOfHoles()+weight_d*getBumps();
-            if(currentXYofShape[4][0]<fitness){
-                currentXYofShape[4][0] = fitness;
-                currentXYofShape = bitMap.getCords(currentXYofShape);
-            }
-            bitMap.syncBitmapWithGrid(Grid);
-            System.out.println("here");
-            printGrid();
-            bitMap.moveUp();
-            if(outerIndex<cycle+1){
-                bitMap.moveMovingShapeRight();
+
+        for(int outerIndex=0;outerIndex<moveShape.states;outerIndex++) {
+            bitMap.moveShapeLeft();
+            bitMap.rotate();
+            int cycle = bitMap.getNumberOfCycles();
+            for (int innerIndex = 0; innerIndex < cycle + 1; innerIndex++) {
+
+                fitness = weight_a * aggregateHeights() + weight_b * getNumberOfLines() + weight_c * getNumberOfHoles() + weight_d * getBumps();
+                if (currentXYofShape[4][0] < fitness) {
+                    currentXYofShape[4][0] = fitness;
+                    currentXYofShape = bitMap.getCords(currentXYofShape);
+                }
+                bitMap.syncBitmapWithGrid(Grid, moveShape);
+                bitMap.moveMovingShapeDown();
+                printGrid();
+                bitMap.moveUp();
+
+
+                if (cycle != innerIndex) {
+                    bitMap.moveMovingShapeRight();
+                }
+
             }
         }
 

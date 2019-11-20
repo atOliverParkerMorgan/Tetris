@@ -1,5 +1,6 @@
 package proc.sketches.AI;
 
+import proc.sketches.Blocks.Block;
 import proc.sketches.Grid.Spot;
 import proc.sketches.Shapes.Shape;
 
@@ -48,7 +49,7 @@ public class Bitmap {
         this.categoryOfMovingShape = Category;
         this.movingShapeCords = movingShapeCords;
         this.Bitmap = new int[Shape.getNum_Y()][Shape.getNum_X()];
-        syncBitmapWithGrid(Grid);
+        //syncBitmapWithGrid(Grid);
 
 
     }
@@ -63,7 +64,9 @@ public class Bitmap {
 
     }
 
-    void syncBitmapWithGrid(Spot[][] Grid){
+    void syncBitmapWithGrid(Spot[][] Grid, Shape movingShape){
+
+
         for (int y = 0; y < Shape.getNum_Y(); y++) {
             for (int x = 0; x < Shape.getNum_X(); x++) {
                 if (Grid[y][x].isOccupied()) {
@@ -73,12 +76,16 @@ public class Bitmap {
                 }
             }
         }
+        for(Block block: movingShape.getAllblocks()){
+            Bitmap[(int) block.y/Shape.getSIZE()][(int) block.x/Shape.getSIZE()] = 1;
+        }
+
         for (int[] movingShapeCord : movingShapeCords) {
 
             Bitmap[movingShapeCord[1]][movingShapeCord[0]] = 0;
         }
 
-        System.out.println();
+
 
 
     }
@@ -88,31 +95,44 @@ public class Bitmap {
         mainLoop:
         while (true){
             for(int[] cords : movingShapeCords){
-                if(cords[1]+1==movingShapeCords.length){
+                if(cords[1]+1==Shape.getNum_Y()){
+
                     break mainLoop;
+
                 }
 
                 else if(getBit(cords[0],cords[1]+1)==0){
-                    break mainLoop;
+                   break mainLoop;
                 }
             }
-            for(int[] cords : movingShapeCords){
-                cords[1] ++;
-            }
+
+            moveDown();
+
+
         }
 
     }
     private void moveMovingShapeLeft(){
-        for(int[] cords : movingShapeCords){
-            cords[0] --;
+        for(int i=0;i<movingShapeCords.length;i++){
+            Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 1;
+            movingShapeCords[i][0] --;
+            Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 0;
         }
 
     }
     void moveMovingShapeRight(){
-        for(int[] cords : movingShapeCords){
-            cords[0] ++;
+        for(int i=0;i<movingShapeCords.length;i++){
+            Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 1;
+            movingShapeCords[i][0] ++;
+            Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 0;
         }
-
+    }
+    private void moveDown(){
+        for(int i=0;i<movingShapeCords.length;i++){
+            Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 1;
+            movingShapeCords[i][1] ++;
+            Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 0;
+        }
     }
 
     int getBit(int x, int y){
@@ -137,9 +157,10 @@ public class Bitmap {
         for (int[] cord:movingShapeCords) {
             if(cord[0]>biggestX){
                 biggestX = cord[0];
+
             }
         }
-        return biggestX-Shape.getNum_X()-1;
+        return Shape.getNum_X()-1-biggestX;
 
     }
 
@@ -163,19 +184,46 @@ public class Bitmap {
             }
 
         }
+
+        while (true){
+            byte check = 0;
+
+            for (int[] movingShapeCord : movingShapeCords) {
+                if (movingShapeCord[0] >= 0 && movingShapeCord[1] >= 0) {
+                    check++;
+
+                }
+            }
+            if(check==4){
+                break;
+            }
+
+
+            for(int i=0;i<movingShapeCords.length;i++){
+                if (movingShapeCords[i][0] < 0) {
+                    movingShapeCords[i][0] ++;
+                }
+                if (movingShapeCords[i][1] < 0) {
+                    movingShapeCords[i][1] ++;
+                }
+            }
+        }
     }
 
     void moveUp(){
         mainLoop:
         while (true){
             for(int[] cords : movingShapeCords){
-                if(cords[1]==0){
+                if(cords[1]<=0){
                     break mainLoop;
                 }
             }
-            for(int[] cords : movingShapeCords){
-                cords[1] --;
+            for(int i=0;i<movingShapeCords.length;i++){
+                Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 1;
+                movingShapeCords[i][1] --;
+                Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 0;
             }
+
         }
     }
 
