@@ -146,14 +146,19 @@ public class AI extends MAIN {
         double weight_d = -0.18443;
 
         double[][] currentXYofShape = new double[][]{{0,0},{0,0},{0,0},{0,0},{Integer.MIN_VALUE}};
-        double fitness = 0;
+        double fitness;
 
 
         bitMap = new Bitmap(getCords(moveShape),Grid,moveShape.getType());
 
         for(int outerIndex=0;outerIndex<moveShape.states;outerIndex++) {
-            bitMap.moveShapeLeft();
             bitMap.rotate();
+
+            bitMap.moveShapeLeft();
+            bitMap.moveMovingShapeDown();
+            bitMap.syncBitmapWithGrid(Grid, moveShape);
+
+
             int cycle = bitMap.getNumberOfCycles();
             for (int innerIndex = 0; innerIndex < cycle + 1; innerIndex++) {
 
@@ -162,10 +167,12 @@ public class AI extends MAIN {
                     currentXYofShape[4][0] = fitness;
                     currentXYofShape = bitMap.getCords(currentXYofShape);
                 }
-                bitMap.syncBitmapWithGrid(Grid, moveShape);
                 bitMap.moveMovingShapeDown();
+                bitMap.syncBitmapWithGrid(Grid, moveShape);
                 printGrid();
-                bitMap.moveUp();
+
+                bitMap.moveMovingShapeUp();
+                bitMap.syncBitmapWithGrid(Grid, moveShape);
 
 
                 if (cycle != innerIndex) {

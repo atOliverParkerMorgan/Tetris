@@ -9,7 +9,7 @@ public class Bitmap {
     int[][] Bitmap;
     private int[][] movingShapeCords;
     private int categoryOfMovingShape;
-    private int state = 0;
+    private int state = 1;
 
     private static final int[][] I1 = new int[][]{{-1,1},{0,0},{1,-1},{2, -2}};
     private static final int[][] I2 = new int[][]{{1,-1},{0,0},{-1,1},{-1*2, 2}};
@@ -63,6 +63,21 @@ public class Bitmap {
 
 
     }
+    private void moveToCenter(){
+        while (true) {
+            if (movingShapeCords[0][1] > Shape.getNum_Y()/2) {
+                moveUp();
+            }else if(movingShapeCords[0][1] < Shape.getNum_Y()/2){
+                moveDown();
+            }else if(movingShapeCords[0][0] > Shape.getNum_X()/2){
+                moveMovingShapeLeft();
+            }else if(movingShapeCords[0][0] < Shape.getNum_X()/2){
+                moveMovingShapeRight();
+            }else {
+                break;
+            }
+        }
+    }
 
     void syncBitmapWithGrid(Spot[][] Grid, Shape movingShape){
 
@@ -102,7 +117,17 @@ public class Bitmap {
                 }
 
                 else if(getBit(cords[0],cords[1]+1)==0){
-                   break mainLoop;
+                    boolean found = false;
+                    for(int[] c : movingShapeCords) {
+                        if (c[1] == cords[1] + 1 && c[0] == cords[0]) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found) {
+                        break mainLoop;
+                    }
+
                 }
             }
 
@@ -165,6 +190,7 @@ public class Bitmap {
     }
 
     public void rotate(){
+        moveToCenter();
         for (int i=0; i<Shape.numberOfBlocks; i++){
 
             movingShapeCords[i][0]+=ALLALL[categoryOfMovingShape][state][i][0];
@@ -210,7 +236,7 @@ public class Bitmap {
         }
     }
 
-    void moveUp(){
+    void moveMovingShapeUp(){
         mainLoop:
         while (true){
             for(int[] cords : movingShapeCords){
@@ -218,12 +244,15 @@ public class Bitmap {
                     break mainLoop;
                 }
             }
-            for(int i=0;i<movingShapeCords.length;i++){
-                Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 1;
-                movingShapeCords[i][1] --;
-                Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 0;
-            }
+           moveUp();
 
+        }
+    }
+    private void moveUp(){
+        for(int i=0;i<movingShapeCords.length;i++){
+            Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 1;
+            movingShapeCords[i][1] --;
+            Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 0;
         }
     }
 
