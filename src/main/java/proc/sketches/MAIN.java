@@ -34,6 +34,8 @@ public class MAIN extends PApplet {
 
     private Shape[] next_Shapes;
 
+    private boolean AIPlaying = false;
+
 
 
 
@@ -70,7 +72,8 @@ public class MAIN extends PApplet {
         // And From your main() method or any other method
         Timer timer = new Timer();
         timer.schedule(new Move(), 0, Spot.getStartTime());
-        ai = new AI(moving_shape,Spot.getGrid());
+        ai = new AI(moving_shape);
+
 
     }public void draw(){
 
@@ -177,22 +180,23 @@ public class MAIN extends PApplet {
         if(!dead) {
             if(checkCollision(moving_shape)){
                 actOnCollision();
+                if(AIPlaying) {
+                    moveAI();
+                }
             }
 
         }
     }
     public void keyPressed() {
         if(!dead) {
-            if(key=='a'){
-                double[][] cord = ai.bestMove(moving_shape,Spot.getGrid());
-                for(int i=0;i<moving_shape.getAllblocks().size();i++){
-                    moving_shape.getAllblocks().get(i).x = cord[i][0]*Shape.getSIZE();
-                    moving_shape.getAllblocks().get(i).y = cord[i][1]*Shape.getSIZE();
+            if(key=='a'||key=='A'){
+                if(AIPlaying){
+                    AIPlaying = false;
+                }else {
+                    AIPlaying = true;
+                    moveAI();
                 }
-                System.out.println(cord[4][0]);
-
             }
-
             if (keyCode == LEFT) {
                 // move on block left
                 moving_shape.move_left();
@@ -284,6 +288,7 @@ public class MAIN extends PApplet {
         Shift();
 
         Shape.getAll_Shapes().add(moving_shape);
+
     }
 
 
@@ -315,36 +320,14 @@ public class MAIN extends PApplet {
         return false;
     }
 
-    protected boolean checkCollisionForAI(Shape moving_shape){
-
-        //collision logic
-        for(Block block: moving_shape.getAllblocks()){
-            // at the bottom of the screen
-            if(block.y+Shape.getSIZE()==Shape.getMax_Y()){
-                return true;
-            }
-            //checking for all collisions with all blocks
-            else{
-                for(int index = 0; index<Shape.getAll_Shapes().size()-1;index++){
-                    for(Block b: Shape.getAll_Shapes().get(index).getAllblocks()){
-                        if(b.y==0){
-                            dead = true;
-                            System.out.println("you have died :((");
-                        }
-
-                        if(b.x==block.x && b.y==block.y+Shape.getSIZE()){
-
-                            return true;
-                        }
-                    }
-                }
-            }
+    private void moveAI(){
+        double[][] cord = ai.bestMove(moving_shape,Spot.getGrid());
+        for(int i=0;i<moving_shape.getAllblocks().size();i++){
+            moving_shape.getAllblocks().get(i).x = cord[i][0]*Shape.getSIZE();
+            moving_shape.getAllblocks().get(i).y = cord[i][1]*Shape.getSIZE();
         }
-        return false;
+        System.out.println("Quality of move:"+ cord[4][0]);
     }
-
-
-
 
 
     public static void main(String... args) {

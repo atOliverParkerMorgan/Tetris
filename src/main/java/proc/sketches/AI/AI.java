@@ -6,9 +6,9 @@ import proc.sketches.Shapes.Shape;
 
 public class AI extends MAIN {
     private Bitmap bitMap;
-    public AI(Shape movingShape, Spot[][] Grid){
+    public AI(Shape movingShape){
 
-        this.bitMap = new Bitmap(getCords(movingShape), Grid, movingShape.getType());
+        this.bitMap = new Bitmap(getCords(movingShape),movingShape.getType());
     }
 
     private int[][] getCords(Shape movingShape){
@@ -149,14 +149,16 @@ public class AI extends MAIN {
         double fitness;
 
 
-        bitMap = new Bitmap(getCords(moveShape),Grid,moveShape.getType());
+        bitMap = new Bitmap(getCords(moveShape),moveShape.getType());
 
         for(int outerIndex=0;outerIndex<moveShape.states;outerIndex++) {
+            bitMap.resetBitmap();
             bitMap.rotate();
-
             bitMap.moveShapeLeft();
-            bitMap.moveMovingShapeDown();
             bitMap.syncBitmapWithGrid(Grid, moveShape);
+
+
+
 
 
             int cycle = bitMap.getNumberOfCycles();

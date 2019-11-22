@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class DarkBlue_L extends Shape{
     private byte flat;
-    public final int start_X;
+    private final int start_X;
     // rotate positions
 
     private final int[][] rotate1 = new int[][]{{0,-2*SIZE},{SIZE,-SIZE},{0,0},{-SIZE,SIZE}};

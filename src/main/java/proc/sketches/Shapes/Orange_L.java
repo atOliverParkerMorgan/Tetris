@@ -2,12 +2,10 @@ package proc.sketches.Shapes;
 
 import proc.sketches.Blocks.Block;
 
-import java.util.ArrayList;
-
 
 public class Orange_L extends Shape{
     private byte flat;
-    public final int start_X;
+    private final int start_X;
     // rotate positions
     private final int[][] rotate1 = new int[][]{{2*SIZE,0},{SIZE,-SIZE},{0,0},{-SIZE,SIZE}};
 
@@ -21,7 +19,7 @@ public class Orange_L extends Shape{
 
     public Orange_L() {
         super(3, (byte) 4);
-        this.start_X = max_X/2-2*SIZE;;
+        this.start_X = max_X/2-2*SIZE;
         this.flat = 1;
 
         for(int index = 0; index < numberOfBlocks; index++){
@@ -39,11 +37,5 @@ public class Orange_L extends Shape{
         flat = rotateFourStates(flat,rotate1,rotate2,rotate3,rotate4);
     }
 
-    public void ChangeYto0(){
-        this.allblocks = new ArrayList<>();
-        for(int index = 0; index < numberOfBlocks; index++){
-            Block b = new Block(SIZE, start_X + structure[index][0], structure[index][1]);
-            this.allblocks.add(b);
-        }
-    }
+
 }

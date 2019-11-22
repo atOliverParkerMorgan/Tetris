@@ -45,7 +45,7 @@ public class Bitmap {
 
 
 
-    Bitmap(int[][] movingShapeCords,Spot[][] Grid, int Category){
+    Bitmap(int[][] movingShapeCords, int Category){
         this.categoryOfMovingShape = Category;
         this.movingShapeCords = movingShapeCords;
         this.Bitmap = new int[Shape.getNum_Y()][Shape.getNum_X()];
@@ -53,21 +53,20 @@ public class Bitmap {
 
 
     }
-
-    private void resetBitmap(int[][] movingShapeCords){
-        for(int[] line: Bitmap){
-            for(int bit: line){
-                bit = 1;
+    void resetBitmap(){
+        for(int y=0;y<Shape.getNum_Y();y++){
+            for(int x=0;x<Shape.getNum_X();x++){
+                Bitmap[y][x] = 1;
             }
         }
 
 
     }
+
+
     private void moveToCenter(){
         int bound = 2;
-        if(this.categoryOfMovingShape==0){
-            bound = 1;
-        }
+
         while (true) {
             if (movingShapeCords[0][1] > bound) {
                 moveUp();

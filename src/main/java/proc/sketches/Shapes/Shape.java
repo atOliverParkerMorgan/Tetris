@@ -262,9 +262,6 @@ public class Shape{
         return type;
     }
 
-    public byte getStates() {
-        return states;
-    }
 }
 
 
