@@ -185,6 +185,11 @@ public class MAIN extends PApplet {
         if(!dead) {
             if(key=='a'){
                 double[][] cord = ai.bestMove(moving_shape,Spot.getGrid());
+                for(int i=0;i<moving_shape.getAllblocks().size();i++){
+                    moving_shape.getAllblocks().get(i).x = cord[i][0]*Shape.getSIZE();
+                    moving_shape.getAllblocks().get(i).y = cord[i][1]*Shape.getSIZE();
+                }
+                System.out.println(cord[4][0]);
 
             }
 
@@ -240,8 +245,8 @@ public class MAIN extends PApplet {
     }
     private Shape pickRandomShape(){
         // generate a random shape
-       // int rand = (int)(Math.random()*7);
-        int rand = 0;
+       int rand = (int)(Math.random()*7);
+
         if(rand==0){
             return new Blue_line();
         }else if(rand==1){

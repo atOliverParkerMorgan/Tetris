@@ -161,15 +161,15 @@ public class AI extends MAIN {
 
             int cycle = bitMap.getNumberOfCycles();
             for (int innerIndex = 0; innerIndex < cycle + 1; innerIndex++) {
-
+                bitMap.moveMovingShapeDown();
+                bitMap.syncBitmapWithGrid(Grid, moveShape);
+               // printGrid();
                 fitness = weight_a * aggregateHeights() + weight_b * getNumberOfLines() + weight_c * getNumberOfHoles() + weight_d * getBumps();
                 if (currentXYofShape[4][0] < fitness) {
                     currentXYofShape[4][0] = fitness;
                     currentXYofShape = bitMap.getCords(currentXYofShape);
                 }
-                bitMap.moveMovingShapeDown();
-                bitMap.syncBitmapWithGrid(Grid, moveShape);
-                printGrid();
+
 
                 bitMap.moveMovingShapeUp();
                 bitMap.syncBitmapWithGrid(Grid, moveShape);

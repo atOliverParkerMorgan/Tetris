@@ -9,11 +9,11 @@ public class Bitmap {
     int[][] Bitmap;
     private int[][] movingShapeCords;
     private int categoryOfMovingShape;
-    private int state = 1;
+    private int state = 0;
 
     private static final int[][] I1 = new int[][]{{-1,1},{0,0},{1,-1},{2, -2}};
     private static final int[][] I2 = new int[][]{{1,-1},{0,0},{-1,1},{-1*2, 2}};
-    private static final int[][][] IALL = new int[][][]{I1,I2};
+    private static final int[][][] IALL = new int[][][]{I2,I1};
 
     private static final int[][] L1 = new int[][]{{0, -2},{1,-1},{0,0},{-1,1}};
     private static final int[][] L2 = new int[][]{{2,0},{1,1},{0,0},{-1,-1}};
@@ -64,10 +64,14 @@ public class Bitmap {
 
     }
     private void moveToCenter(){
+        int bound = 2;
+        if(this.categoryOfMovingShape==0){
+            bound = 1;
+        }
         while (true) {
-            if (movingShapeCords[0][1] > Shape.getNum_Y()/2) {
+            if (movingShapeCords[0][1] > bound) {
                 moveUp();
-            }else if(movingShapeCords[0][1] < Shape.getNum_Y()/2){
+            }else if(movingShapeCords[0][1] < bound){
                 moveDown();
             }else if(movingShapeCords[0][0] > Shape.getNum_X()/2){
                 moveMovingShapeLeft();
@@ -190,47 +194,49 @@ public class Bitmap {
     }
 
     public void rotate(){
-        moveToCenter();
-        for (int i=0; i<Shape.numberOfBlocks; i++){
+        if(this.categoryOfMovingShape!=6) {
+            moveToCenter();
+            for (int i = 0; i < Shape.numberOfBlocks; i++) {
 
-            movingShapeCords[i][0]+=ALLALL[categoryOfMovingShape][state][i][0];
-            movingShapeCords[i][1]+=ALLALL[categoryOfMovingShape][state][i][1];
-        }
-        if(categoryOfMovingShape==0||categoryOfMovingShape==2||categoryOfMovingShape==5){
-            if(state==1){
-                state = 0;
-            }else if(state==0){
-                state = 1;
+                movingShapeCords[i][0] += ALLALL[categoryOfMovingShape][state][i][0];
+                movingShapeCords[i][1] += ALLALL[categoryOfMovingShape][state][i][1];
             }
-        }else{
-            if(state==3){
-                state = 0;
-            }else{
-                state ++;
-            }
-
-        }
-
-        while (true){
-            byte check = 0;
-
-            for (int[] movingShapeCord : movingShapeCords) {
-                if (movingShapeCord[0] >= 0 && movingShapeCord[1] >= 0) {
-                    check++;
-
+            if (categoryOfMovingShape == 0 || categoryOfMovingShape == 2 || categoryOfMovingShape == 5) {
+                if (state == 1) {
+                    state = 0;
+                } else if (state == 0) {
+                    state = 1;
                 }
-            }
-            if(check==4){
-                break;
-            }
-
-
-            for(int i=0;i<movingShapeCords.length;i++){
-                if (movingShapeCords[i][0] < 0) {
-                    movingShapeCords[i][0] ++;
+            } else {
+                if (state == 3) {
+                    state = 0;
+                } else {
+                    state++;
                 }
-                if (movingShapeCords[i][1] < 0) {
-                    movingShapeCords[i][1] ++;
+
+            }
+
+            while (true) {
+                byte check = 0;
+
+                for (int[] movingShapeCord : movingShapeCords) {
+                    if (movingShapeCord[0] >= 0 && movingShapeCord[1] >= 0) {
+                        check++;
+
+                    }
+                }
+                if (check == 4) {
+                    break;
+                }
+
+
+                for (int i = 0; i < movingShapeCords.length; i++) {
+                    if (movingShapeCords[i][0] < 0) {
+                        movingShapeCords[i][0]++;
+                    }
+                    if (movingShapeCords[i][1] < 0) {
+                        movingShapeCords[i][1]++;
+                    }
                 }
             }
         }
