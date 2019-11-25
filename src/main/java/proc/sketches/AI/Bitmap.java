@@ -106,9 +106,9 @@ public class Bitmap {
             }else if(movingShapeCords[0][1] < bound){
                 moveDown();
             }else if(movingShapeCords[0][0] > Shape.getNum_X()/2){
-                moveMovingShapeLeft();
+                moveLeft();
             }else if(movingShapeCords[0][0] < Shape.getNum_X()/2){
-                moveMovingShapeRight();
+                moveRight();
             }else {
                 break;
             }
@@ -176,7 +176,7 @@ public class Bitmap {
         }
 
     }
-    private void moveMovingShapeLeft(){
+    void moveLeft(){
         // move shape left and update values (set old spot to 1 and new to 0)
         for(int i=0;i<movingShapeCords.length;i++){
             Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 1;
@@ -185,7 +185,20 @@ public class Bitmap {
         }
 
     }
-    void moveMovingShapeRight(){
+    boolean checkMoveLeft(){
+        for (int[] cord:movingShapeCords) {
+            if(cord[0]==0) {
+                return false;
+            }
+            if (getBit(cord[0] - 1, cord[1]) == 0) {
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    void moveRight(){
         // move shape right and update values
         for(int i=0;i<movingShapeCords.length;i++){
             Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 1;
@@ -193,6 +206,22 @@ public class Bitmap {
             Bitmap[movingShapeCords[i][1]][movingShapeCords[i][0]] = 0;
         }
     }
+    boolean checkMoveRight(){
+        for (int[] cord:movingShapeCords) {
+            if(cord[0]+1==Shape.getNum_X()) {
+                return false;
+            }
+            if (getBit(cord[0] + 1, cord[1]) == 0) {
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+
+
+
     private void moveDown(){
         // move shape down and update values
         for(int i=0;i<movingShapeCords.length;i++){
@@ -216,9 +245,12 @@ public class Bitmap {
                     break mainLoop;
                 }
             }
-            moveMovingShapeLeft();
+            moveLeft();
         }
     }
+
+
+
 
     int getNumberOfCycles(){
         // get the number of cycles needed in a for loop to go through all the possible possibilities (from left to right)

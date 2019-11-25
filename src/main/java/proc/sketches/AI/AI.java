@@ -202,21 +202,43 @@ public class AI extends MAIN {
                 bitMap.moveMovingShapeDown();
                 bitMap.syncBitmapWithGrid(Grid, moveShape);
                // printGrid();
-                fitness = weight_a * aggregateHeights() + weight_b * getNumberOfLines() + weight_c * getNumberOfHoles() + weight_d * getBumps();
-                if (currentXYofShape[4][0] < fitness) {
-                    currentXYofShape[4][0] = fitness;
-                    currentXYofShape = bitMap.getCords(currentXYofShape);
-                }
 
+                for(int i=0;i<3;i++) {
+                    boolean movedLeft = false;
+                    boolean movedRight = false;
+
+                    if (i == 1 && bitMap.checkMoveLeft()) {
+                        bitMap.moveLeft();
+                        movedLeft = true;
+                    } else if (i == 2 && bitMap.checkMoveRight()) {
+                        bitMap.moveRight();
+                        movedRight = true;
+                    }
+                    bitMap.syncBitmapWithGrid(Grid, moveShape);
+                    if(i==0||movedLeft||movedRight) {
+                        fitness = weight_a * aggregateHeights() + weight_b * getNumberOfLines() + weight_c * getNumberOfHoles() + weight_d * getBumps();
+                        if (currentXYofShape[4][0] < fitness) {
+                            currentXYofShape[4][0] = fitness;
+                            currentXYofShape = bitMap.getCords(currentXYofShape);
+                        }
+
+                        if (movedLeft) {
+                            bitMap.moveRight();
+                        } else if (movedRight) {
+                            bitMap.moveLeft();
+                        }
+                    }
+
+
+
+                }
 
                 bitMap.moveMovingShapeUp();
-                bitMap.syncBitmapWithGrid(Grid, moveShape);
-
 
                 if (cycle != innerIndex) {
-                    bitMap.moveMovingShapeRight();
+                    bitMap.moveRight();
                 }
-
+                bitMap.syncBitmapWithGrid(Grid, moveShape);
             }
         }
 
