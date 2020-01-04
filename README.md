@@ -2,6 +2,10 @@
 this program is a Tetris UI it comes with a built in AI
 
 ## AI
+´´´
+press A to activate AI
+´´´
+
 ### the AI uses four function to evaluate a given position
 #
 * NUMBER OF HOLES => the count of holes or on filled blocks that can't be filled in the current move
@@ -14,22 +18,6 @@ this program is a Tetris UI it comes with a built in AI
 ## For what can use this?
 * play a game of tetris
 * watch a ai play tetris
-
-
-## How does it look?
-these are some screenshots from the app:
-
-* ### main page
-#
-![Main UI](https://i.imgur.com/quMhIbL.png)
-
-#
-* ### menu page
-# 
-
-![menu UI](https://i.imgur.com/N5R8ITK.png)
-
-#
 
 
 ## Built With
