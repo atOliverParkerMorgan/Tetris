@@ -2,10 +2,9 @@
 this program is a Tetris UI it comes with a built in AI
 
 ## AI
-´´´
+```
 press A to activate AI
-´´´
-
+```
 ### the AI uses four function to evaluate a given position
 #
 * NUMBER OF HOLES => the count of holes or on filled blocks that can't be filled in the current move
