@@ -79,4 +79,4 @@ At the moment, the repository does not include unit test sources under `src/test
 	- sprite loading in `MAIN` currently uses an absolute local path and may require adjustment for other machines
 
 ## License
-This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md).
+This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md). 
